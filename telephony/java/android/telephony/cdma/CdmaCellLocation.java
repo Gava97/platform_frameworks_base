@@ -86,7 +86,7 @@ public class CdmaCellLocation extends CellLocation {
      * It is represented in units of 0.25 seconds and ranges from -1296000
      * to 1296000, both values inclusive (corresponding to a range of -90
      * to +90 degrees). Integer.MAX_VALUE is considered invalid value.
-     *
+     * 
      * @return cdma base station latitude in units of 0.25 seconds, Integer.MAX_VALUE if unknown
      */
     public int getBaseStationLatitude() {
@@ -99,7 +99,7 @@ public class CdmaCellLocation extends CellLocation {
      * It is represented in units of 0.25 seconds and ranges from -2592000
      * to 2592000, both values inclusive (corresponding to a range of -180
      * to +180 degrees). Integer.MAX_VALUE is considered invalid value.
-     *
+     * 
      * @return cdma base station longitude in units of 0.25 seconds, Integer.MAX_VALUE if unknown
      */
     public int getBaseStationLongitude() {
