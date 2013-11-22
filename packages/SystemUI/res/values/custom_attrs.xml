@@ -15,17 +15,9 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 -->
-<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
-    <!-- Title shown in recents popup for adding an application to the split view -->
-    <string name="status_bar_recent_add_to_split_view">Add to Split View</string>
-
-    <!-- QuickSettings: Immersive mode [CHAR LIMIT=NONE] -->
-    <string name="quick_settings_immersive_mode_label">Immersive</string>
-    <!-- QuickSettings: Immersive mode (Off) [CHAR LIMIT=NONE] -->
-    <string name="quick_settings_immersive_mode_off_label">Immersive Off</string>
-
-    <!-- QS Battery Tile -->
-    <string name="quick_settings_battery_charging">Charging</string>
-    <string name="quick_settings_battery_discharging">Discharging</string>
+<resources>
+    <declare-styleable name="BatteryIcon">
+        <attr name="batteryView" format="string" />
+    </declare-styleable>
 </resources>
