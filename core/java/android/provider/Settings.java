@@ -2673,6 +2673,12 @@ public final class Settings {
         public static final String LOCKSCREEN_NOTIFICATIONS_FORCE_EXPANDED_VIEW = "lockscreen_notifications_force_expanded_view";
 
         /**
+         * Show when WiFi or data mobile is sending/receiving data
+         * @hide
+         */
+        public static final String STATUS_BAR_NETWORK_ACTIVITY = "status_bar_network_activity";
+
+        /**
 * Wakes the device when a new notifications is received
 * @hide
 */
