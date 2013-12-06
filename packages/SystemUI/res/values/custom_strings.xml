@@ -58,4 +58,7 @@
     <string name="quick_settings_ringer_mode_normal_vibrate_label">Sound &amp; Vibration</string>
     <string name="quick_settings_volume_label">Volume</string>
 
+    <!-- Content description of the data connection type DC-HSPA+ for accessibility (not shown on the screen). [CHAR LIMIT=NONE] -->
+    <string name="accessibility_data_connection_DC" translatable="false">DC-HSPA+</string>
+
 </resources>
