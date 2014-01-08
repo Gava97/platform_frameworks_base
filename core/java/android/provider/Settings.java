@@ -2576,11 +2576,13 @@ public final class Settings {
         public static final String EGG_MODE = "egg_mode";
 
         /**
-* Immersive mode global actions switch
-* 0 = no
-* 1 = yes
-* @hide
-*/
+         * Immersive mode global actions switch
+         * 0 = no
+         * 1 = yes
+         * 2 = hide navigation bar
+         * 3 = hide status bar
+		 * @hide
+         */
         public static final String IMMERSIVE_MODE = "immersive_mode";
 
         /**
