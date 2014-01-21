@@ -156,6 +156,7 @@ class ServerThread {
         InputManagerService inputManager = null;
         TelephonyRegistry telephonyRegistry = null;
         ConsumerIrService consumerIr = null;
+        RotationSwitchObserver switchObserver = null;
 
         // Create a handler thread just for the window manager to enjoy.
         HandlerThread wmHandlerThread = new HandlerThread("WindowManager");
@@ -816,6 +817,15 @@ class ServerThread {
                     reportWtf("starting MediaRouterService", e);
                 }
             }
+
+            if (context.getResources().getBoolean(R.bool.config_hasRotationLockSwitch)) {
+                try {
+                    switchObserver = new RotationSwitchObserver(context);
+                }
+                catch (Throwable e){
+                    reportWtf("starting RotationSwitchObserver failed", e);
+                }
+            }
         }
 
         // Before things start rolling, be sure we have decided whether
@@ -929,6 +939,7 @@ class ServerThread {
         final TelephonyRegistry telephonyRegistryF = telephonyRegistry;
         final PrintManagerService printManagerF = printManager;
         final MediaRouterService mediaRouterF = mediaRouter;
+        final RotationSwitchObserver switchObserverF = switchObserver;
 
         // We now tell the activity manager it is okay to run third party
         // code.  It will call back into us once it has gotten to the state
@@ -1001,6 +1012,11 @@ class ServerThread {
                     if (recognitionF != null) recognitionF.systemReady();
                 } catch (Throwable e) {
                     reportWtf("making Recognition Service ready", e);
+                }
+                try {
+                    if (switchObserverF != null) switchObserverF.systemReady();
+                } catch (Throwable e) {
+                    reportWtf("Notifying RotationSwitchObserver running", e);
                 }
                 Watchdog.getInstance().start();
 
