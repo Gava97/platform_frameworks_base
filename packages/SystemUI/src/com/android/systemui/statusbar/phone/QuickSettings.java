@@ -42,6 +42,8 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LevelListDrawable;
 import android.hardware.display.DisplayManager;
 import android.hardware.display.WifiDisplayStatus;
+import android.media.AudioManager;
+import android.media.MediaRouter;
 import android.net.ConnectivityManager;
 import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
@@ -108,6 +110,7 @@ class QuickSettings {
         AIRPLANE,
         BLUETOOTH,
         LOCATION,
+        SOUND,
         HEADSUP
     }
 
@@ -116,8 +119,8 @@ class QuickSettings {
     public static final String DEFAULT_TILES = Tile.USER + DELIMITER + Tile.BRIGHTNESS
         + DELIMITER + Tile.SETTINGS + DELIMITER + Tile.WIFI + DELIMITER + Tile.RSSI
         + DELIMITER + Tile.ROTATION + DELIMITER + Tile.BATTERY + DELIMITER + Tile.IMMERSIVE
-        + DELIMITER + Tile.BLUETOOTH + DELIMITER + Tile.LOCATION + DELIMITER + Tile.AIRPLANE
-        + DELIMITER + Tile.HEADSUP;
+        + DELIMITER + Tile.SOUND + DELIMITER + Tile.BLUETOOTH + DELIMITER + Tile.LOCATION
+        + DELIMITER + Tile.AIRPLANE + DELIMITER + Tile.HEADSUP;
 
     private Context mContext;
     private PanelBar mBar;
@@ -919,6 +922,58 @@ class QuickSettings {
                     });
                     parent.addView(immersiveTile);
                     if(addMissing) immersiveTile.setVisibility(View.GONE);
+                // Sound tile
+                } else if(Tile.SOUND.toString().equals(tile.toString())) {
+                    final QuickSettingsDualBasicTile soundTile
+                            = new QuickSettingsDualBasicTile(mContext);
+                    soundTile.setDefaultContent();
+                    soundTile.setTileId(Tile.SOUND);
+                    // Front side (Ringer tile)
+                    soundTile.setFrontImageResource(R.drawable.ic_qs_ringer_normal);
+                    soundTile.setFrontTextResource(R.string.quick_settings_ringer_mode_normal_label);
+                    soundTile.setFrontOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            mModel.switchRingerMode();
+                            mModel.refreshRingerModeTile();
+                        }
+                    });
+                    soundTile.setFrontOnLongClickListener(new View.OnLongClickListener() {
+                        @Override
+                        public boolean onLongClick(View v) {
+                            collapsePanels();
+                            startSettingsActivity(android.provider.Settings.ACTION_SOUND_SETTINGS);
+                            return true;
+                        }
+                    });
+                    mModel.addRingerModeTile(soundTile.getFront(), new QuickSettingsModel.RefreshCallback() {
+                        @Override
+                        public void refreshView(QuickSettingsTileView unused, State state) {
+                            soundTile.setFrontImageResource(state.iconId);
+                            soundTile.setFrontText(state.label);
+                        }
+                    });
+                    // Back side (Volume tile)
+                    soundTile.setBackImageResource(R.drawable.ic_qs_volume);
+                    soundTile.setBackTextResource(R.string.quick_settings_volume_label);
+                    soundTile.setBackOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            collapsePanels();
+                            AudioManager am = (AudioManager) mContext.getSystemService(Context.AUDIO_SERVICE);
+                            am.adjustVolume(AudioManager.ADJUST_SAME, AudioManager.FLAG_SHOW_UI);
+                        }
+                    });
+                    soundTile.setBackOnLongClickListener(new View.OnLongClickListener() {
+                        @Override
+                        public boolean onLongClick(View v) {
+                            collapsePanels();
+                            startSettingsActivity(android.provider.Settings.ACTION_SOUND_SETTINGS);
+                            return true;
+                        }
+                    });
+                    parent.addView(soundTile);
+                    if(addMissing) soundTile.setVisibility(View.GONE);
                 }
             }
         }
