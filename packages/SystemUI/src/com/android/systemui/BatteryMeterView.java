@@ -48,6 +48,9 @@ import android.widget.LinearLayout;
 import com.android.systemui.R;
 
 public class BatteryMeterView extends View implements DemoMode {
+    final static String QuickSettings = "quicksettings";
+    final static String StatusBar = "statusbar";
+    private String mBatteryView;
     public static final String TAG = BatteryMeterView.class.getSimpleName();
     public static final String ACTION_LEVEL_TEST = "com.android.systemui.BATTERY_LEVEL_TEST";
 
@@ -195,6 +198,15 @@ public class BatteryMeterView extends View implements DemoMode {
         final Resources res = context.getResources();
         TypedArray levels = res.obtainTypedArray(R.array.batterymeter_color_levels);
         TypedArray colors = res.obtainTypedArray(R.array.batterymeter_color_values);
+        TypedArray batteryType = context.obtainStyledAttributes(attrs,
+            com.android.systemui.R.styleable.BatteryIcon, 0, 0);
+
+        mBatteryView = batteryType.getString(
+            com.android.systemui.R.styleable.BatteryIcon_batteryView);
+
+        if (mBatteryView == null) {
+            mBatteryView = StatusBar;
+        }
 
         final int N = levels.length();
         mColors = new int[2*N];
@@ -280,7 +292,8 @@ public class BatteryMeterView extends View implements DemoMode {
                                 Settings.System.STATUS_BAR_BATTERY_STYLE, 0);
 
         mShowPercent = batteryStyle == 1;
-        boolean show = (batteryStyle == 0 || mShowPercent);
+        boolean show = (batteryStyle == 0 || batteryStyle == 2 || mShowPercent
+            || (mBatteryView.equals(QuickSettings) && batteryStyle == 6));
 
         setVisibility(show ? View.VISIBLE : View.GONE);
         postInvalidate();
