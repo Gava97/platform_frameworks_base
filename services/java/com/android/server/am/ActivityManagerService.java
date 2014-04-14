@@ -38,6 +38,7 @@ import com.android.internal.os.BackgroundThread;
 import com.android.internal.os.BatteryStatsImpl;
 import com.android.internal.os.ProcessCpuTracker;
 import com.android.internal.os.TransferPipe;
+import com.android.internal.os.Zygote;
 import com.android.internal.util.FastPrintWriter;
 import com.android.internal.util.FastXmlSerializer;
 import com.android.internal.util.MemInfoReader;
@@ -56,8 +57,6 @@ import com.android.server.wm.StackBox;
 import com.android.server.wm.WindowManagerService;
 import com.google.android.collect.Lists;
 import com.google.android.collect.Maps;
-
-import dalvik.system.Zygote;
 
 import libcore.io.IoUtils;
 
@@ -2768,7 +2767,7 @@ public final class ActivityManagerService extends ActivityManagerNative
             // Run the app in safe mode if its manifest requests so or the
             // system is booted in safe mode.
             if ((app.info.flags & ApplicationInfo.FLAG_VM_SAFE_MODE) != 0 ||
-                Zygote.systemInSafeMode == true) {
+                SystemServer.inSafeMode == true) {
                 debugFlags |= Zygote.DEBUG_ENABLE_SAFEMODE;
             }
             if ("1".equals(SystemProperties.get("debug.checkjni"))) {
@@ -2781,11 +2780,16 @@ public final class ActivityManagerService extends ActivityManagerNative
                 debugFlags |= Zygote.DEBUG_ENABLE_ASSERT;
             }
 
+            String requiredAbi = app.info.requiredCpuAbi;
+            if (requiredAbi == null) {
+                requiredAbi = Build.SUPPORTED_ABIS[0];
+            }
+
             // Start the process.  It will either succeed and return a result containing
             // the PID of the new process, or else throw a RuntimeException.
             Process.ProcessStartResult startResult = Process.start("android.app.ActivityThread",
                     app.processName, uid, uid, gids, debugFlags, mountExternal,
-                    app.info.targetSdkVersion, app.info.seinfo, null);
+                    app.info.targetSdkVersion, app.info.seinfo, requiredAbi, null);
 
             BatteryStatsImpl bs = mBatteryStatsService.getActiveStatistics();
             synchronized (bs) {
