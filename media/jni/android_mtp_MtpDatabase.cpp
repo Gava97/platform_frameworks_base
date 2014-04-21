@@ -824,20 +824,15 @@ void* MyMtpDatabase::getThumbnail(MtpObjectHandle handle, size_t& outThumbSize) 
 
     if (getObjectFilePath(handle, path, length, format) == MTP_RESPONSE_OK
             && (format == MTP_FORMAT_EXIF_JPEG || format == MTP_FORMAT_JFIF)) {
-        ResetJpgfile();
-         // Start with an empty image information structure.
-        memset(&ImageInfo, 0, sizeof(ImageInfo));
-        ImageInfo.FlashUsed = -1;
-        ImageInfo.MeteringMode = -1;
-        ImageInfo.Whitebalance = -1;
-        strncpy(ImageInfo.FileName, (const char *)path, PATH_MAX);
-        if (ReadJpegFile((const char*)path, READ_METADATA)) {
-            Section_t* section = FindSection(M_EXIF);
-            if (section) {
-                outThumbSize = ImageInfo.ThumbnailSize;
-                result = malloc(outThumbSize);
-                if (result)
-                    memcpy(result, section->Data + ImageInfo.ThumbnailOffset + 8, outThumbSize);
+
+        ExifData *exifdata = exif_data_new_from_file(path);
+        if (exifdata) {
+            if (exifdata->data) {
+                result = malloc(exifdata->size);
+                if (result) {
+                    memcpy(result, exifdata->data, exifdata->size);
+                    outThumbSize = exifdata->size;
+                }
             }
             DiscardData();
         }
