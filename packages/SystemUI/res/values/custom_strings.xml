@@ -25,47 +25,4 @@
     <!-- QuickSettings: Immersive mode (Off) [CHAR LIMIT=NONE] -->
     <string name="quick_settings_immersive_mode_off_label">Immersive Off</string>
 
-<<<<<<< HEAD
-=======
-    <string name="network_4G">4G/LTE</string>
-    <string name="network_3G_only" translatable="false">3G Only</string>
-    <string name="network_3G_auto" translatable="false">2G/3G Auto</string>
-    <string name="network_3G" translatable="false">2G/3G Pref</string>
-    <string name="network_2G" translatable="false">2G Only</string>
-
-    <string name="quick_settings_sleep_label_back_15">15s</string>
-    <string name="quick_settings_sleep_label_back_30">30s</string>
-    <string name="quick_settings_sleep_label_back_60">60s</string>
-    <string name="quick_settings_sleep_label_back_120">2m</string>
-    <string name="quick_settings_sleep_label_back_300">5m</string>
-    <string name="quick_settings_sleep_label_back_600">10m</string>
-    <string name="quick_settings_sleep_label_back_1800">30m</string>
-    <string name="quick_settings_sleep_label_back_unknown">0000</string>
-    <string name="quick_settings_location_mode_high">High</string>
-    <string name="quick_settings_location_mode_battery">Battery</string>
-    <string name="quick_settings_location_mode_sensors">Device</string>
-    <string name="quick_settings_network_type">Status</string>
-    <string name="quick_settings_network_unknown">Unknown</string>
-    <string name="quick_settings_network_disable">\nNo internet</string>
-    <string name="quick_settings_quiethours_label">Quiet hours</string>
-    <string name="quick_settings_quiethours_off_label">Quiet hours off</string>
-    <string name="quick_settings_ringer_on">Sound on</string>
-    <string name="quick_settings_ringer_off">Sound off</string>
-    <string name="quick_settings_ringer_normal">Sound</string>
-    <string name="quick_settings_screen_sleep">Go to sleep</string>
-    <string name="quick_settings_sync">Sync</string>
-    <string name="quick_settings_sync_off">Sync off</string>
-    <string name="quick_settings_torch">Torch</string>
-    <string name="quick_settings_torch_off">Torch off</string>
-    <string name="quick_settings_vibration_on">Vibration on</string>
-    <string name="quick_settings_vibration_off">Vibration off</string>
-    <string name="quick_settings_volume">Volume</string>
-    <string name="quick_settings_volume_status">Status</string>
-    <string name="quick_settings_usb_tether_off_label">Disconnected</string>
-    <string name="quick_settings_usb_tether_connected_label">Tethering off</string>
-    <string name="quick_settings_usb_tether_on_label">Tethering</string>
-
-     <string name="status_bar_notification_hide_icon_packages">Hide app\'s notification icon(s)</string>
-
->>>>>>> 249d8f7... [1/3] Base: Add MobileNetwork Flip Tile
 </resources>
