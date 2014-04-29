@@ -68,4 +68,8 @@
         android:layout_below="@id/rssi_images"
         android:textAllCaps="@bool/quick_settings_rssi_tile_capitalization"
         />
+<<<<<<< HEAD
 </RelativeLayout>
+=======
+</RelativeLayout>
+>>>>>>> 249d8f7... [1/3] Base: Add MobileNetwork Flip Tile

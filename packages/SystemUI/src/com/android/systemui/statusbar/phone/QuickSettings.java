@@ -513,6 +513,7 @@ class QuickSettings {
                                 rotationLockTile.setText(state.label);
                             }
                         }
+<<<<<<< HEAD
                     });
             parent.addView(rotationLockTile);
         }
@@ -571,6 +572,189 @@ class QuickSettings {
             }
         });
         parent.addView(immersiveTile);
+=======
+                  });
+                  parent.addView(wifiTile);
+                  if (addMissing) wifiTile.setVisibility(View.GONE);
+               } else if (Tile.RSSI.toString().equals(tile.toString())) { // rssi tile
+                  if (mModel.deviceHasMobileData()) {
+                      // RSSI
+                      final QuickSettingsNetworkFlipTile rssiTile
+                                  = new QuickSettingsNetworkFlipTile(mContext);
+                      rssiTile.setTileId(Tile.RSSI);
+                      final ConnectivityManager cms =
+                         (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
+                      rssiTile.setBackLabel(mContext.getString(R.string.quick_settings_network_type));
+                      rssiTile.setFrontOnClickListener(new View.OnClickListener() {
+                           @Override
+                           public void onClick(View v) {
+                              boolean currentState = cms.getMobileDataEnabled();
+                              cms.setMobileDataEnabled(!currentState);
+                      }} );
+                      rssiTile.setFrontOnLongClickListener(new View.OnLongClickListener() {
+                            @Override
+                            public boolean onLongClick(View v) {
+                                Intent intent = new Intent();
+                                intent.setComponent(new ComponentName(
+                                     "com.android.settings",
+                                     "com.android.settings.Settings$DataUsageSummaryActivity"));
+                                startSettingsActivity(intent);
+                                return true;
+                            }
+                      });
+                      mModel.addRSSITile(rssiTile.getFront(), new NetworkActivityCallback() {
+                            @Override
+                            public void refreshView(QuickSettingsTileView view, State state) {
+                                RSSIState rssiState = (RSSIState) state;
+                                // Force refresh
+                                rssiTile.setFrontImageDrawable(null);
+                                rssiTile.setFrontImageResource(rssiState.signalIconId);
+
+                                if (rssiState.dataTypeIconId > 0) {
+                                    rssiTile.setFrontImageOverlayResource(rssiState.dataTypeIconId);
+                                } else {
+                                    rssiTile.setFrontImageOverlayDrawable(null);
+                                }
+                                setActivity(view, rssiState);
+
+                                rssiTile.setFrontText(state.label);
+                                rssiTile.setContentDescription(mContext.getResources().getString(
+                                     R.string.accessibility_quick_settings_mobile,
+                                     rssiState.signalContentDescription, rssiState.dataContentDescription,
+                                     state.label));
+                           }
+                      });
+                      rssiTile.setBackOnLongClickListener(new View.OnLongClickListener() {
+                           @Override
+                           public boolean onLongClick(View v) {
+                               Intent intent = new Intent(Intent.ACTION_MAIN);
+                               intent.setClassName("com.android.phone", "com.android.phone.Settings");
+                               intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                               startSettingsActivity(intent);
+                               return true;
+                           }
+                      });
+
+                      mModel.addMobileNetworkTile(rssiTile.getBack(), new QuickSettingsModel.RefreshCallback() {
+                           @Override
+                           public void refreshView(QuickSettingsTileView view, State mobileNetworkState) {
+                               rssiTile.setBackFunction(mobileNetworkState.label);
+                               rssiTile.setBackImageResource(mobileNetworkState.iconId);
+                           }
+                      });
+                      parent.addView(rssiTile);
+                      if (addMissing) rssiTile.setVisibility(View.GONE);
+                  }
+               } else if (Tile.ROTATION.toString().equals(tile.toString())) { // rotation tile
+                  // Rotation Lock
+                  if (mContext.getResources().getBoolean(R.bool.quick_settings_show_rotation_lock)
+                      || DEBUG_GONE_TILES) {
+                      final QuickSettingsBasicTile rotationLockTile
+                            = new QuickSettingsBasicTile(mContext);
+                      rotationLockTile.setTileId(Tile.ROTATION);
+                      rotationLockTile.setOnClickListener(new View.OnClickListener() {
+                           @Override
+                           public void onClick(View view) {
+                               final boolean locked = mRotationLockController.isRotationLocked();
+                               mRotationLockController.setRotationLocked(!locked);
+                           }
+                      });
+                      rotationLockTile.setOnLongClickListener(new View.OnLongClickListener() {
+                           @Override
+                           public boolean onLongClick(View v) {
+                               startSettingsActivity(android.provider.Settings.ACTION_DISPLAY_SETTINGS);
+                               return true;
+                           }
+                      });
+                      mModel.addRotationLockTile(rotationLockTile, mRotationLockController,
+                           new QuickSettingsModel.RefreshCallback() {
+                                @Override
+                                public void refreshView(QuickSettingsTileView view, State state) {
+                                    QuickSettingsModel.RotationLockState rotationLockState =
+                                          (QuickSettingsModel.RotationLockState) state;
+                                    if (state.iconId != 0) {
+                                       // needed to flush any cached IDs
+                                       rotationLockTile.setImageDrawable(null);
+                                       rotationLockTile.setImageResource(state.iconId);
+                                    }
+                                    if (state.label != null) {
+                                        rotationLockTile.setText(state.label);
+                                    }
+                                }
+                      });
+                      parent.addView(rotationLockTile);
+                      if (addMissing) rotationLockTile.setVisibility(View.GONE);
+                  }
+               } else if (Tile.BATTERY.toString().equals(tile.toString())) { // battery tile
+                  // Battery
+                  mBatteryTile = new QuickSettingsBasicBatteryTile(mContext);
+                  updateBattery();
+                  mBatteryTile.setTileId(Tile.BATTERY);
+                  mBatteryTile.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            startSettingsActivity(Intent.ACTION_POWER_USAGE_SUMMARY);
+                        }
+                  });
+                  mModel.addBatteryTile(mBatteryTile, new QuickSettingsModel.RefreshCallback() {
+                        @Override
+                        public void refreshView(QuickSettingsTileView unused, State state) {
+                            QuickSettingsModel.BatteryState batteryState =
+                                   (QuickSettingsModel.BatteryState) state;
+                            String t;
+                            if (batteryState.batteryLevel == 100) {
+                                t = mContext.getString(R.string.quick_settings_battery_charged_label);
+                            } else {
+                                if (batteryState.pluggedIn) {
+                                    t = mBatteryStyle != 3 // circle percent
+                                        ? mContext.getString(R.string.quick_settings_battery_charging_label,
+                                        batteryState.batteryLevel)
+                                        : mContext.getString(R.string.quick_settings_battery_charging);
+                                } else {     // battery bar or battery circle
+                                    t = (mBatteryStyle == 0 || mBatteryStyle == 2)
+                                        ? mContext.getString(R.string.status_bar_settings_battery_meter_format,
+                                        batteryState.batteryLevel)
+                                        : mContext.getString(R.string.quick_settings_battery_discharging);
+                                }
+                            }
+                            mBatteryTile.setText(t);
+                            mBatteryTile.setContentDescription(
+                            mContext.getString(R.string.accessibility_quick_settings_battery, t));
+                        }
+                  });
+                  parent.addView(mBatteryTile);
+                  if (addMissing) mBatteryTile.setVisibility(View.GONE);
+               } else if (Tile.IMMERSIVE.toString().equals(tile.toString())) { // Immersive tile
+                  // Immersive mode
+                  final QuickSettingsBasicTile immersiveTile
+                       = new QuickSettingsBasicTile(mContext);
+                  immersiveTile.setTileId(Tile.IMMERSIVE);
+                  immersiveTile.setImageResource(R.drawable.ic_qs_immersive_off);
+                  immersiveTile.setTextResource(R.string.quick_settings_immersive_mode_off_label);
+                  immersiveTile.setOnClickListener(new View.OnClickListener() {
+                       @Override
+                       public void onClick(View v) {
+                           collapsePanels();
+                           boolean checkModeOn = Settings.System.getInt(mContext
+                                  .getContentResolver(), Settings.System.IMMERSIVE_MODE, 0) == 1;
+                           Settings.System.putInt(mContext.getContentResolver(),
+                                 Settings.System.IMMERSIVE_MODE, checkModeOn ? 0 : 1);
+                      }
+                  });
+                  mModel.addImmersiveTile(immersiveTile,
+                        new QuickSettingsModel.BasicRefreshCallback(immersiveTile));
+                  parent.addView(immersiveTile);
+                  if (addMissing) immersiveTile.setVisibility(View.GONE);
+               } else if (Tile.AIRPLANE.toString().equals(tile.toString())) { // airplane tile
+                  // Airplane Mode
+                  final QuickSettingsBasicTile airplaneTile
+                        = new QuickSettingsBasicTile(mContext);
+                  airplaneTile.setTileId(Tile.AIRPLANE);
+                  mModel.addAirplaneModeTile(airplaneTile, new QuickSettingsModel.RefreshCallback() {
+                        @Override
+                        public void refreshView(QuickSettingsTileView unused, State state) {
+                            airplaneTile.setImageResource(state.iconId);
+>>>>>>> 249d8f7... [1/3] Base: Add MobileNetwork Flip Tile
 
         // Airplane Mode
         final QuickSettingsBasicTile airplaneTile
