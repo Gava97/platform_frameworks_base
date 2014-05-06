@@ -25,6 +25,7 @@ import com.android.internal.widget.LockPatternUtils;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.appwidget.AppWidgetManager;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
@@ -117,7 +118,6 @@ public class KeyguardViewManager {
         @Override
         public void onChange(boolean selfChange) {
             updateSettings();
-            mViewManager.updateViewLayout(mKeyguardHost, mWindowLayoutParams);
         }
     }
 
@@ -386,9 +386,9 @@ public class KeyguardViewManager {
         // The keyguard view will have set up window flags in onFinishInflate before we set
         // the view mediator callback. Make sure it knows the correct IME state.
         if (mViewMediatorCallback != null) {
-            if (mLockscreenNotifications)
+            if (mLockscreenNotifications) {
                 mNotificationView.setViewMediator(mViewMediatorCallback);
-
+            }
             KeyguardPasswordView kpv = (KeyguardPasswordView) mKeyguardView.findViewById(
                     R.id.keyguard_password_view);
 

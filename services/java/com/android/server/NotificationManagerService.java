@@ -648,7 +648,7 @@ public class NotificationManagerService extends INotificationManager.Stub
             final int oldUser = info.userid;                       
             // Lockscreen Notifications
             if (!info.isSystem) {
-                Slog.v(TAG, "disabling notification listener for user " + oldUser + ": " + component);                 
+                Slog.v(TAG, "disabling notification listener for user " + oldUser + ": " + component);
                 unregisterListenerService(component, info.userid);
             }
         }
