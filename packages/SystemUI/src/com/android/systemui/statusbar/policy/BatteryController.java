@@ -36,6 +36,10 @@ import com.android.systemui.R;
 public class BatteryController extends BroadcastReceiver {
     private static final String TAG = "StatusBar.BatteryController";
 
+    private Context mContext;
+    private ArrayList<ImageView> mIconViews = new ArrayList<ImageView>();
+
+    private static final int BATTERY_STYLE_NORMAL         = 0;
     private static final int BATTERY_ICON_STYLE_NORMAL      = R.drawable.tw_stat_sys_battery;
     private static final int BATTERY_ICON_STYLE_CHARGE      = R.drawable.tw_stat_sys_battery_charge;
     
@@ -124,13 +128,25 @@ public class BatteryController extends BroadcastReceiver {
     
     private void updateBattery() {
         int mIcon = View.VISIBLE;
-        int mIconStyle = mBatteryPlugged ? BATTERY_ICON_STYLE_CHARGE
+        int mIconStyle = BATTERY_ICON_STYLE_NORMAL;
+
+        if (mBatteryStyle == BATTERY_STYLE_NORMAL) {
+            mIcon = (View.VISIBLE);
+            mIconStyle = mBatteryPlugged ? BATTERY_ICON_STYLE_CHARGE
                     : BATTERY_ICON_STYLE_NORMAL;
+        }
+
         int N = mIconViews.size();
         for (int i=0; i<N; i++) {
             ImageView v = mIconViews.get(i);
             v.setVisibility(mIcon);
             v.setImageResource(mIconStyle);
         }
+    }
+
+    private void updateSettings() {
+        ContentResolver resolver = mContext.getContentResolver();
+
+        updateBattery();
     }
 }
