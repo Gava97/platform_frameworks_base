@@ -68,7 +68,7 @@ public class BatteryMeterView extends View implements DemoMode {
     private final RectF mClipFrame = new RectF();
     private final RectF mBoltFrame = new RectF();
 
-    public int mChameleonBatteryColor = Color.WHITE;
+    public int mChameleonBatteryColor;
     private class BatteryTracker extends BroadcastReceiver {
         public static final int UNKNOWN_LEVEL = -1;
 
