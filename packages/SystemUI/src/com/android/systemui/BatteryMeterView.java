@@ -23,7 +23,6 @@ import android.content.IntentFilter;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PorterDuff;
@@ -52,7 +51,6 @@ public class BatteryMeterView extends View implements DemoMode {
 
     int[] mColors;
 
-    boolean mShowIcon = true;
     boolean mShowPercent = true;
     Paint mFramePaint, mBatteryPaint, mWarningTextPaint, mTextPaint, mBoltPaint;
     int mButtonHeight;
@@ -70,7 +68,6 @@ public class BatteryMeterView extends View implements DemoMode {
     private final RectF mClipFrame = new RectF();
     private final RectF mBoltFrame = new RectF();
 
-    private int mBatteryColor;
     public int mChameleonBatteryColor = Color.WHITE;
     private class BatteryTracker extends BroadcastReceiver {
         public static final int UNKNOWN_LEVEL = -1;
@@ -299,9 +296,7 @@ public class BatteryMeterView extends View implements DemoMode {
         mFrame.bottom -= SUBPIXEL;
 
         // first, draw the battery shape
-         if (mShowIcon) {
-            c.drawRect(mFrame, mFramePaint);
-        }
+        c.drawRect(mFrame, mFramePaint);
 
         // fill 'er up
         final int color = tracker.plugged ? mChargeColor : getColorForLevel(level);
@@ -313,17 +308,14 @@ public class BatteryMeterView extends View implements DemoMode {
             drawFrac = 0f;
         }
 
-        if (mShowIcon) {
-            c.drawRect(mButtonFrame, drawFrac == 1f ? mBatteryPaint : mFramePaint);
-        }
+        c.drawRect(mButtonFrame, drawFrac == 1f ? mBatteryPaint : mFramePaint);
+
         mClipFrame.set(mFrame);
         mClipFrame.top += (mFrame.height() * (1f - drawFrac));
 
         c.save(Canvas.CLIP_SAVE_FLAG);
         c.clipRect(mClipFrame);
-        if (mShowIcon) {
-            c.drawRect(mFrame, mBatteryPaint);
-        }
+        c.drawRect(mFrame, mBatteryPaint);
         c.restore();
 
         if (tracker.plugged) {
