@@ -92,7 +92,6 @@ import android.widget.TextSwitcher;
 import android.widget.TextView;
 
 import com.android.internal.statusbar.StatusBarIcon;
-import com.android.systemui.BatteryMeterView;
 import com.android.systemui.DemoMode;
 import com.android.systemui.EventLogTags;
 import com.android.systemui.R;
@@ -310,6 +309,12 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode {
             }
         }
     };
+
+    private void updateBatteryIcons() {
+        if (mBattery != null) {
+            mBattery.updateSettings();
+        }
+    }
 
     // ensure quick settings is disabled until the current user makes it through the setup wizard
     private boolean mUserSetup = false;
@@ -694,6 +699,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode {
         resetUserSetupObserver();
         
 		mBattery = (BatteryMeterView) mStatusBarView.findViewById(R.id.battery);
+        updateBatteryIcons();
 
         return mStatusBarView;
     }
@@ -3041,6 +3047,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode {
 			}
 		}
         mBattery.mChameleonBatteryColor = mCurrentColor;
+        mBattery.updateSettings();
     }
 
 	private void updateBackgroundDelayed() {
