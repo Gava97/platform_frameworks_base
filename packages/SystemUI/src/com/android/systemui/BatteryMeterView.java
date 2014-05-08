@@ -68,7 +68,6 @@ public class BatteryMeterView extends View implements DemoMode {
     private final RectF mClipFrame = new RectF();
     private final RectF mBoltFrame = new RectF();
 
-    public int mChameleonBatteryColor;
     private class BatteryTracker extends BroadcastReceiver {
         public static final int UNKNOWN_LEVEL = -1;
 
@@ -384,22 +383,5 @@ public class BatteryMeterView extends View implements DemoMode {
            }
            postInvalidate();
         }
-    }
-
-    public void updateBattery() {
-        mShowIcon = true;
-        mShowPercent = false;
-
-        BatteryTracker tracker = mDemoMode ? mDemoTracker : mTracker;
-
-        if (tracker.level <= 14 && !tracker.plugged) {
-            mBatteryPaint.setColor(Color.RED);
-        } else if (mBatteryColor == -2) {
-            mBatteryPaint.setColor(mChameleonBatteryColor);
-        } else {
-            mBatteryPaint.setColor(mChameleonBatteryColor);
-        }
-
-        postInvalidate();
     }
 }
