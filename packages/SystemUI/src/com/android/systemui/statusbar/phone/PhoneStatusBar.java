@@ -278,8 +278,6 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode {
 
     DisplayMetrics mDisplayMetrics = new DisplayMetrics();
 
-    private BatteryMeterView mBattery;
-
     //Chameleon
     private int mStatusBarColor;
     private String mPackageName;
@@ -309,12 +307,6 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode {
             }
         }
     };
-
-    private void updateBatteryIcons() {
-        if (mBattery != null) {
-            mBattery.updateSettings();
-        }
-    }
 
     // ensure quick settings is disabled until the current user makes it through the setup wizard
     private boolean mUserSetup = false;
@@ -697,10 +689,6 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode {
 
         // listen for USER_SETUP_COMPLETE setting (per-user)
         resetUserSetupObserver();
-        
-		mBattery = (BatteryMeterView) mStatusBarView.findViewById(R.id.battery);
-        updateBatteryIcons();
-
         return mStatusBarView;
     }
 
