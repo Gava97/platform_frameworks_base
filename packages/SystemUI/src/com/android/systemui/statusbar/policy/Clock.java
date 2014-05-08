@@ -47,6 +47,7 @@ public class Clock extends TextView implements DemoMode {
     private String mClockFormatString;
     private SimpleDateFormat mClockFormat;
     private Locale mLocale;
+    private boolean mScreenOn = true;
 
     private static final int AM_PM_STYLE_NORMAL  = 0;
     private static final int AM_PM_STYLE_SMALL   = 1;
@@ -79,6 +80,8 @@ public class Clock extends TextView implements DemoMode {
             filter.addAction(Intent.ACTION_TIMEZONE_CHANGED);
             filter.addAction(Intent.ACTION_CONFIGURATION_CHANGED);
             filter.addAction(Intent.ACTION_USER_SWITCHED);
+            filter.addAction(Intent.ACTION_SCREEN_ON);
+            filter.addAction(Intent.ACTION_SCREEN_OFF);
 
             getContext().registerReceiver(mIntentReceiver, filter, null, getHandler());
         }
@@ -119,7 +122,15 @@ public class Clock extends TextView implements DemoMode {
                     mClockFormatString = ""; // force refresh
                 }
             }
-            updateClock();
+            if (action.equals(Intent.ACTION_SCREEN_ON)) {
+                mScreenOn = true;
+            } else if (action.equals(Intent.ACTION_SCREEN_OFF)) {
+                mScreenOn = false;
+            }
+
+            if (mScreenOn) {
+                updateClock();
+            }
         }
     };
 
