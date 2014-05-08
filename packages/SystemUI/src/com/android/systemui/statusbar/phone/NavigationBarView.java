@@ -421,7 +421,7 @@ public class NavigationBarView extends LinearLayout {
         setVisibleOrGone(getCameraButton(), showCamera);
         // Just hide view if neccessary - don't show it because that interferes with Keyguard
         // which uses setButtonDrawable to decide whether it should be shown
-        setVisibleOrGone(getNotifsButton(), showNotifs && mWasNotifsButtonVisible);
+        setVisibleOrGone(getNotifsButton(), showNotifs);
 
         mBarTransitions.applyBackButtonQuiescentAlpha(mBarTransitions.getMode(), true /*animate*/);
     }
