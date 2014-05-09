@@ -27,6 +27,34 @@ import java.util.ArrayList;
 public class BatteryController extends BroadcastReceiver {
     private static final String TAG = "StatusBar.BatteryController";
 
+    private Context mContext;
+    private ArrayList<ImageView> mIconViews = new ArrayList<ImageView>();
+
+    private static final int BATTERY_STYLE_NORMAL         = 0;
+    private static final int BATTERY_ICON_STYLE_NORMAL      = R.drawable.tw_stat_sys_battery;
+    private static final int BATTERY_ICON_STYLE_CHARGE      = R.drawable.tw_stat_sys_battery_charge;
+    
+    private boolean mBatteryPlugged = false;
+    private int mBatteryStyle;
+    private int mBatteryIcon = BATTERY_ICON_STYLE_NORMAL;
+
+    Handler mHandler;
+
+    class SettingsObserver extends ContentObserver {
+        SettingsObserver(Handler handler) {
+            super(handler);
+        }
+
+        void observe() {
+            ContentResolver resolver = mContext.getContentResolver();
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.STATUS_BAR_BATTERY), false, this);
+        }
+
+        @Override public void onChange(boolean selfChange) {
+            updateSettings();
+        }
+    }
 
     private ArrayList<BatteryStateChangeCallback> mChangeCallbacks =
             new ArrayList<BatteryStateChangeCallback>();
@@ -63,6 +91,31 @@ public class BatteryController extends BroadcastReceiver {
             for (BatteryStateChangeCallback cb : mChangeCallbacks) {
                 cb.onBatteryLevelChanged(level, plugged);
             }
+            updateBattery();
         }
+    }
+    
+    private void updateBattery() {
+        int mIcon = View.VISIBLE;
+        int mIconStyle = BATTERY_ICON_STYLE_NORMAL;
+
+        if (mBatteryStyle == BATTERY_STYLE_NORMAL) {
+            mIcon = (View.VISIBLE);
+            mIconStyle = mBatteryPlugged ? BATTERY_ICON_STYLE_CHARGE
+                    : BATTERY_ICON_STYLE_NORMAL;
+        }
+
+        int N = mIconViews.size();
+        for (int i=0; i<N; i++) {
+            ImageView v = mIconViews.get(i);
+            v.setVisibility(mIcon);
+            v.setImageResource(mIconStyle);
+        }
+    }
+
+    private void updateSettings() {
+        ContentResolver resolver = mContext.getContentResolver();
+
+        updateBattery();
     }
 }
