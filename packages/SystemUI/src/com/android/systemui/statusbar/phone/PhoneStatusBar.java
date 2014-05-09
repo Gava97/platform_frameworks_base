@@ -2925,7 +2925,6 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode {
             } else {
 				mStatusBarColor = mSysColor;
 			}
-            mBattery.updateBattery();
             transform(isGray(mSysColor));
             if (mTransparent) {
 				mStatusBarView.setBackgroundColor(Color.TRANSPARENT);
