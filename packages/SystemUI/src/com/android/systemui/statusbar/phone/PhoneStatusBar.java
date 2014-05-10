@@ -2921,6 +2921,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode {
                     updateBackgroundDelayed();
                     return;
                 }
+                mMustChange = false;
             } else {
 				mStatusBarColor = mSysColor;
 			}
