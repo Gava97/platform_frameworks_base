@@ -2921,10 +2921,10 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode {
                     updateBackgroundDelayed();
                     return;
                 }
-                mMustChange = false;
             } else {
 				mStatusBarColor = mSysColor;
 			}
+            mBattery.updateBattery();
             transform(isGray(mSysColor));
             if (mTransparent) {
 				mStatusBarView.setBackgroundColor(Color.TRANSPARENT);
@@ -3048,9 +3048,8 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode {
 			}
 		}
         mBattery.mChameleonBatteryColor = mCurrentColor;
-		mBattery.updateBattery();
-		mBattery.invalidate();
-  	}
+		mBattery.updateSettings();
+    }
 
 	private void updateBackgroundDelayed() {
 		mHandler.postDelayed(new Runnable() {
