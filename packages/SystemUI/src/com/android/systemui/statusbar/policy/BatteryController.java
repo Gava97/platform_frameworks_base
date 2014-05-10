@@ -23,6 +23,7 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Color;
 import android.database.ContentObserver;
 import android.os.BatteryManager;
 import android.os.Handler;
@@ -46,6 +47,7 @@ public class BatteryController extends BroadcastReceiver {
     private boolean mBatteryPlugged = false;
     private int mBatteryStyle;
     private int mBatteryIcon = BATTERY_ICON_STYLE_NORMAL;
+    public int mChameleonBatteryColor;
 
     Handler mHandler;
 
@@ -126,7 +128,7 @@ public class BatteryController extends BroadcastReceiver {
         }
     }
     
-    private void updateBattery() {
+    public void updateBattery() {
         int mIcon = View.VISIBLE;
         int mIconStyle = BATTERY_ICON_STYLE_NORMAL;
 
@@ -134,6 +136,7 @@ public class BatteryController extends BroadcastReceiver {
             mIcon = (View.VISIBLE);
             mIconStyle = mBatteryPlugged ? BATTERY_ICON_STYLE_CHARGE
                     : BATTERY_ICON_STYLE_NORMAL;
+            mIconStyle.setColor(mChameleonBatteryColor);
         }
 
         int N = mIconViews.size();

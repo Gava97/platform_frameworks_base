@@ -279,6 +279,8 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode {
 
     DisplayMetrics mDisplayMetrics = new DisplayMetrics();
 
+    private BatteryController mBattery;
+
     //Chameleon
     private boolean mIsInKeyguard;
     private int mStatusBarColor;
@@ -310,6 +312,12 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode {
             }
         }
     };
+
+    private void updateBatteryIcons() {
+        if (mBattery != null) {
+            mBattery.updateSettings();
+        }
+    }
 
     // ensure quick settings is disabled until the current user makes it through the setup wizard
     private boolean mUserSetup = false;
@@ -694,6 +702,10 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode {
 
         // listen for USER_SETUP_COMPLETE setting (per-user)
         resetUserSetupObserver();
+
+        mBattery = (BatteryController) mStatusBarView.findViewById(R.id.battery);
+        updateBatteryIcons();
+
         return mStatusBarView;
     }
 
@@ -2992,7 +3004,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode {
 				(int) dims[1]);
 		Bitmap cropped = null;
 		try {
-			if (mTransparent) {
+			if(mTransparent) {
 				if (!requiresRotation)
 					cropped = Bitmap.createBitmap(captured, 0,
 							(int) (getStatusBarHeight() * 0.99), 1, 1);
@@ -3030,7 +3042,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode {
 		return color;
 	}
 
-	private void setStatusBarColor(int color) {
+	private void setStatusBarColor() {
 		for (ImageView icon : mIcons) {
 			if (icon != null) {
 				icon.setColorFilter(mCurrentColor, PorterDuff.Mode.MULTIPLY);
@@ -3042,12 +3054,15 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode {
 		for (TextView tv : mTexts) {
 			if (tv != null) {
 				tv.mTransColor = false;
-                tv.setTextColor(color);
+                tv.setTextColor(mCurrentColor);
 			} else {
 				mTexts.remove(tv);
 			}
 		}
-    }
+        mBattery.mChameleonBatteryColor = mCurrentColor;
+		mBattery.updateBattery();
+		mBattery.invalidate();
+  	}
 
 	private void updateBackgroundDelayed() {
 		mHandler.postDelayed(new Runnable() {
@@ -3073,7 +3088,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode {
 
 	private void refresh() {
 		setColorForLayout(mStatusIcons, mCurrentColor, PorterDuff.Mode.MULTIPLY);
-		setStatusBarColor(mCurrentColor);
+		setStatusBarColor();
 	}
 
 	private void setColorForLayout(LinearLayout statusIcons, int color,
