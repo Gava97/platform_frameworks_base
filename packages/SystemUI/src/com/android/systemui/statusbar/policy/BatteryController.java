@@ -47,7 +47,7 @@ public class BatteryController extends BroadcastReceiver {
     private boolean mBatteryPlugged = false;
     private int mBatteryStyle;
     private int mBatteryIcon = BATTERY_ICON_STYLE_NORMAL;
-    public int mChameleonBatteryColor;
+    public int mChameleonBatteryColor = Color.WHITE;
 
     Handler mHandler;
 
