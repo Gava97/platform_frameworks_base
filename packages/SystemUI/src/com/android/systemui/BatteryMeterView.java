@@ -1,28 +1,30 @@
 /*
- * Copyright (C) 2013 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+* Copyright (C) 2013 The Android Open Source Project
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+* http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/
 
 package com.android.systemui;
 
 import android.content.BroadcastReceiver;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PorterDuff;
@@ -32,9 +34,16 @@ import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.os.BatteryManager;
 import android.os.Bundle;
+import android.os.UserHandle;
 import android.provider.Settings;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup.LayoutParams;
+import android.widget.LinearLayout;
+
+import com.android.systemui.R;
 
 public class BatteryMeterView extends View implements DemoMode {
     public static final String TAG = BatteryMeterView.class.getSimpleName();
@@ -44,14 +53,17 @@ public class BatteryMeterView extends View implements DemoMode {
     public static final boolean SINGLE_DIGIT_PERCENT = false;
     public static final boolean SHOW_100_PERCENT = false;
 
+    public static final int BATTERY_STYLE_NORMAL = 0;
+
     public static final int FULL = 96;
     public static final int EMPTY = 4;
 
-    public static final float SUBPIXEL = 0.4f;  // inset rects for softer edges
+    public static final float SUBPIXEL = 0.4f; // inset rects for softer edges
 
     int[] mColors;
 
-    boolean mShowPercent = true;
+    boolean mShowIcon = true;
+    boolean mShowPercent = false;
     Paint mFramePaint, mBatteryPaint, mWarningTextPaint, mTextPaint, mBoltPaint;
     int mButtonHeight;
     private float mTextHeight, mWarningTextHeight;
@@ -68,6 +80,10 @@ public class BatteryMeterView extends View implements DemoMode {
     private final RectF mClipFrame = new RectF();
     private final RectF mBoltFrame = new RectF();
 
+    private int mBatteryStyle;
+    private int mBatteryColor;
+    public int mChameleonBatteryColor = Color.WHITE;
+    public int mChameleonBoltColor = Color.BLACK;
     private class BatteryTracker extends BroadcastReceiver {
         public static final int UNKNOWN_LEVEL = -1;
 
@@ -340,7 +356,7 @@ public class BatteryMeterView extends View implements DemoMode {
                         mBoltFrame.top + mBoltPoints[1] * mBoltFrame.height());
             }
             c.drawPath(mBoltPath, mBoltPaint);
-        } else if (level <= EMPTY) {
+        } else if (level <= EMPTY && mBatteryStyle == BATTERY_STYLE_NORMAL) {
             final float x = mWidth * 0.5f;
             final float y = (mHeight + mWarningTextHeight) * 0.48f;
             c.drawText(mWarningString, x, y, mWarningTextPaint);
@@ -384,4 +400,47 @@ public class BatteryMeterView extends View implements DemoMode {
            postInvalidate();
         }
     }
+
+    public void updateSettings() {
+        ContentResolver resolver = mContext.getContentResolver();
+
+        mBatteryStyle = Settings.System.getIntForUser(resolver,
+                Settings.System.STATUS_BAR_BATTERY, 0, UserHandle.USER_CURRENT);
+        
+        boolean activated = (mBatteryStyle == BATTERY_STYLE_NORMAL);
+
+        setVisibility(activated ? View.VISIBLE : View.GONE);
+
+        if (activated) {
+            LinearLayout.LayoutParams lp = null;
+            float width = 0f;
+            float height = 0f;
+            Resources res = mContext.getResources();
+            DisplayMetrics metrics = res.getDisplayMetrics();
+
+            updateBattery();
+        }
+    }
+
+    public void updateBattery() {
+        if (mBatteryStyle == BATTERY_STYLE_NORMAL) {
+            mShowIcon = true;
+            mShowPercent = false;
+        }
+
+        BatteryTracker tracker = mDemoMode ? mDemoTracker : mTracker;
+
+        if (tracker.level <= 14 && !tracker.plugged) {
+            mBatteryPaint.setColor(Color.RED);
+        } else if (mBatteryColor == -2) {
+            mBatteryPaint.setColor(mChameleonBatteryColor);
+            mBoltPaint.setColor(mChameleonBatteryColor);
+        } else {
+            mBatteryPaint.setColor(mChameleonBatteryColor);
+            mBoltPaint.setColor(mChameleonBoltColor);
+            mTextPaint.setColor(mBoltPaint.getColor());
+        }
+        postInvalidate();
+    }
 }
+

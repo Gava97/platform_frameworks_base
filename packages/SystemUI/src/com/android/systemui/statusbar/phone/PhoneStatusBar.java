@@ -1,18 +1,18 @@
 /*
- * Copyright (C) 2010 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+* Copyright (C) 2010 The Android Open Source Project
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+* http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/
 
 package com.android.systemui.statusbar.phone;
 
@@ -92,6 +92,7 @@ import android.widget.TextSwitcher;
 import android.widget.TextView;
 
 import com.android.internal.statusbar.StatusBarIcon;
+import com.android.systemui.BatteryMeterView;
 import com.android.systemui.DemoMode;
 import com.android.systemui.EventLogTags;
 import com.android.systemui.R;
@@ -278,7 +279,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode {
 
     DisplayMetrics mDisplayMetrics = new DisplayMetrics();
 
-    private BatteryController mBattery;
+    private BatteryMeterView mBattery;
 
     //Chameleon
     private int mStatusBarColor;
@@ -315,6 +316,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode {
             mBattery.updateSettings();
         }
     }
+
 
     // ensure quick settings is disabled until the current user makes it through the setup wizard
     private boolean mUserSetup = false;
@@ -579,7 +581,6 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode {
         // Other icons
         mLocationController = new LocationController(mContext); // will post a notification
         mBatteryController = new BatteryController(mContext);
-        mBatteryController.addIconView((ImageView)mStatusBarView.findViewById(R.id.battery));
         mNetworkController = new NetworkController(mContext);
         mBluetoothController = new BluetoothController(mContext);
         mRotationLockController = new RotationLockController(mContext);
@@ -699,7 +700,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode {
         // listen for USER_SETUP_COMPLETE setting (per-user)
         resetUserSetupObserver();
 
-        mBattery = (BatteryController) mStatusBarView.findViewById(R.id.battery);
+        mBattery = (BatteryMeterView) mStatusBarView.findViewById(R.id.battery);
         updateBatteryIcons();
 
         return mStatusBarView;
@@ -1276,8 +1277,8 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode {
     }
 
     /**
-     * State is one or more of the DISABLE constants from StatusBarManager.
-     */
+* State is one or more of the DISABLE constants from StatusBarManager.
+*/
     public void disable(int state) {
         final int old = mDisabled;
         final int diff = state ^ old;
@@ -1291,25 +1292,25 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode {
         StringBuilder flagdbg = new StringBuilder();
         flagdbg.append("disable: < ");
         flagdbg.append(((state & StatusBarManager.DISABLE_EXPAND) != 0) ? "EXPAND" : "expand");
-        flagdbg.append(((diff  & StatusBarManager.DISABLE_EXPAND) != 0) ? "* " : " ");
+        flagdbg.append(((diff & StatusBarManager.DISABLE_EXPAND) != 0) ? "* " : " ");
         flagdbg.append(((state & StatusBarManager.DISABLE_NOTIFICATION_ICONS) != 0) ? "ICONS" : "icons");
-        flagdbg.append(((diff  & StatusBarManager.DISABLE_NOTIFICATION_ICONS) != 0) ? "* " : " ");
+        flagdbg.append(((diff & StatusBarManager.DISABLE_NOTIFICATION_ICONS) != 0) ? "* " : " ");
         flagdbg.append(((state & StatusBarManager.DISABLE_NOTIFICATION_ALERTS) != 0) ? "ALERTS" : "alerts");
-        flagdbg.append(((diff  & StatusBarManager.DISABLE_NOTIFICATION_ALERTS) != 0) ? "* " : " ");
+        flagdbg.append(((diff & StatusBarManager.DISABLE_NOTIFICATION_ALERTS) != 0) ? "* " : " ");
         flagdbg.append(((state & StatusBarManager.DISABLE_NOTIFICATION_TICKER) != 0) ? "TICKER" : "ticker");
-        flagdbg.append(((diff  & StatusBarManager.DISABLE_NOTIFICATION_TICKER) != 0) ? "* " : " ");
+        flagdbg.append(((diff & StatusBarManager.DISABLE_NOTIFICATION_TICKER) != 0) ? "* " : " ");
         flagdbg.append(((state & StatusBarManager.DISABLE_SYSTEM_INFO) != 0) ? "SYSTEM_INFO" : "system_info");
-        flagdbg.append(((diff  & StatusBarManager.DISABLE_SYSTEM_INFO) != 0) ? "* " : " ");
+        flagdbg.append(((diff & StatusBarManager.DISABLE_SYSTEM_INFO) != 0) ? "* " : " ");
         flagdbg.append(((state & StatusBarManager.DISABLE_BACK) != 0) ? "BACK" : "back");
-        flagdbg.append(((diff  & StatusBarManager.DISABLE_BACK) != 0) ? "* " : " ");
+        flagdbg.append(((diff & StatusBarManager.DISABLE_BACK) != 0) ? "* " : " ");
         flagdbg.append(((state & StatusBarManager.DISABLE_HOME) != 0) ? "HOME" : "home");
-        flagdbg.append(((diff  & StatusBarManager.DISABLE_HOME) != 0) ? "* " : " ");
+        flagdbg.append(((diff & StatusBarManager.DISABLE_HOME) != 0) ? "* " : " ");
         flagdbg.append(((state & StatusBarManager.DISABLE_RECENT) != 0) ? "RECENT" : "recent");
-        flagdbg.append(((diff  & StatusBarManager.DISABLE_RECENT) != 0) ? "* " : " ");
+        flagdbg.append(((diff & StatusBarManager.DISABLE_RECENT) != 0) ? "* " : " ");
         flagdbg.append(((state & StatusBarManager.DISABLE_CLOCK) != 0) ? "CLOCK" : "clock");
-        flagdbg.append(((diff  & StatusBarManager.DISABLE_CLOCK) != 0) ? "* " : " ");
+        flagdbg.append(((diff & StatusBarManager.DISABLE_CLOCK) != 0) ? "* " : " ");
         flagdbg.append(((state & StatusBarManager.DISABLE_SEARCH) != 0) ? "SEARCH" : "search");
-        flagdbg.append(((diff  & StatusBarManager.DISABLE_SEARCH) != 0) ? "* " : " ");
+        flagdbg.append(((diff & StatusBarManager.DISABLE_SEARCH) != 0) ? "* " : " ");
         flagdbg.append(">");
         Log.d(TAG, flagdbg.toString());
 
@@ -1395,8 +1396,8 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode {
     }
 
     /**
-     * All changes to the status bar and notifications funnel through here and are batched.
-     */
+* All changes to the status bar and notifications funnel through here and are batched.
+*/
     private class H extends BaseStatusBar.H {
         public void handleMessage(Message m) {
             super.handleMessage(m);
@@ -1424,7 +1425,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode {
         }
     }
 
-    /**  if the interrupting notification had a fullscreen intent, fire it now.  */
+    /** if the interrupting notification had a fullscreen intent, fire it now. */
     private void escalateHeadsUp() {
         if (mInterruptingNotificationEntry != null) {
             final StatusBarNotification sbn = mInterruptingNotificationEntry.notification;
@@ -1780,16 +1781,16 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode {
     }
 
     /**
-     * Enables or disables layers on the children of the notifications pile.
-     *
-     * When layers are enabled, this method attempts to enable layers for the minimal
-     * number of children. Only children visible when the notification area is fully
-     * expanded will receive a layer. The technique used in this method might cause
-     * more children than necessary to get a layer (at most one extra child with the
-     * current UI.)
-     *
-     * @param layerType {@link View#LAYER_TYPE_NONE} or {@link View#LAYER_TYPE_HARDWARE}
-     */
+* Enables or disables layers on the children of the notifications pile.
+*
+* When layers are enabled, this method attempts to enable layers for the minimal
+* number of children. Only children visible when the notification area is fully
+* expanded will receive a layer. The technique used in this method might cause
+* more children than necessary to get a layer (at most one extra child with the
+* current UI.)
+*
+* @param layerType {@link View#LAYER_TYPE_NONE} or {@link View#LAYER_TYPE_HARDWARE}
+*/
     private void setPileLayers(int layerType) {
         final int count = mPile.getChildCount();
 
@@ -2078,9 +2079,9 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode {
     }
 
     private void checkUserAutohide(View v, MotionEvent event) {
-        if ((mSystemUiVisibility & STATUS_OR_NAV_TRANSIENT) != 0  // a transient bar is revealed
+        if ((mSystemUiVisibility & STATUS_OR_NAV_TRANSIENT) != 0 // a transient bar is revealed
                 && event.getAction() == MotionEvent.ACTION_OUTSIDE // touch outside the source bar
-                && event.getX() == 0 && event.getY() == 0  // a touch outside both bars
+                && event.getX() == 0 && event.getY() == 0 // a touch outside both bars
                 ) {
             userAutohide();
         }
@@ -2150,7 +2151,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode {
 
         // Show the ticker if one is requested. Also don't do this
         // until status bar window is attached to the window manager,
-        // because...  well, what's the point otherwise?  And trying to
+        // because... well, what's the point otherwise? And trying to
         // run a ticker without being attached will crash!
         if (n.getNotification().tickerText != null && mStatusBarWindow.getWindowToken() != null) {
             if (0 == (mDisabled & (StatusBarManager.DISABLE_NOTIFICATION_ICONS
@@ -2220,71 +2221,71 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode {
     public void dump(FileDescriptor fd, PrintWriter pw, String[] args) {
         synchronized (mQueueLock) {
             pw.println("Current Status Bar state:");
-            pw.println("  mExpandedVisible=" + mExpandedVisible
+            pw.println(" mExpandedVisible=" + mExpandedVisible
                     + ", mTrackingPosition=" + mTrackingPosition);
-            pw.println("  mTicking=" + mTicking);
-            pw.println("  mTracking=" + mTracking);
-            pw.println("  mDisplayMetrics=" + mDisplayMetrics);
-            pw.println("  mPile: " + viewInfo(mPile));
-            pw.println("  mTickerView: " + viewInfo(mTickerView));
-            pw.println("  mScrollView: " + viewInfo(mScrollView)
+            pw.println(" mTicking=" + mTicking);
+            pw.println(" mTracking=" + mTracking);
+            pw.println(" mDisplayMetrics=" + mDisplayMetrics);
+            pw.println(" mPile: " + viewInfo(mPile));
+            pw.println(" mTickerView: " + viewInfo(mTickerView));
+            pw.println(" mScrollView: " + viewInfo(mScrollView)
                     + " scroll " + mScrollView.getScrollX() + "," + mScrollView.getScrollY());
         }
 
-        pw.print("  mInteractingWindows="); pw.println(mInteractingWindows);
-        pw.print("  mStatusBarWindowState=");
+        pw.print(" mInteractingWindows="); pw.println(mInteractingWindows);
+        pw.print(" mStatusBarWindowState=");
         pw.println(windowStateToString(mStatusBarWindowState));
-        pw.print("  mStatusBarMode=");
+        pw.print(" mStatusBarMode=");
         pw.println(BarTransitions.modeToString(mStatusBarMode));
         dumpBarTransitions(pw, "mStatusBarView", mStatusBarView.getBarTransitions());
         if (mNavigationBarView != null) {
-            pw.print("  mNavigationBarWindowState=");
+            pw.print(" mNavigationBarWindowState=");
             pw.println(windowStateToString(mNavigationBarWindowState));
-            pw.print("  mNavigationBarMode=");
+            pw.print(" mNavigationBarMode=");
             pw.println(BarTransitions.modeToString(mNavigationBarMode));
             dumpBarTransitions(pw, "mNavigationBarView", mNavigationBarView.getBarTransitions());
         }
 
-        pw.print("  mNavigationBarView=");
+        pw.print(" mNavigationBarView=");
         if (mNavigationBarView == null) {
             pw.println("null");
         } else {
             mNavigationBarView.dump(fd, pw, args);
         }
 
-        pw.println("  Panels: ");
+        pw.println(" Panels: ");
         if (mNotificationPanel != null) {
-            pw.println("    mNotificationPanel=" +
+            pw.println(" mNotificationPanel=" +
                 mNotificationPanel + " params=" + mNotificationPanel.getLayoutParams().debug(""));
-            pw.print  ("      ");
+            pw.print (" ");
             mNotificationPanel.dump(fd, pw, args);
         }
         if (mSettingsPanel != null) {
-            pw.println("    mSettingsPanel=" +
+            pw.println(" mSettingsPanel=" +
                 mSettingsPanel + " params=" + mSettingsPanel.getLayoutParams().debug(""));
-            pw.print  ("      ");
+            pw.print (" ");
             mSettingsPanel.dump(fd, pw, args);
         }
 
         if (DUMPTRUCK) {
             synchronized (mNotificationData) {
                 int N = mNotificationData.size();
-                pw.println("  notification icons: " + N);
+                pw.println(" notification icons: " + N);
                 for (int i=0; i<N; i++) {
                     NotificationData.Entry e = mNotificationData.get(i);
-                    pw.println("    [" + i + "] key=" + e.key + " icon=" + e.icon);
+                    pw.println(" [" + i + "] key=" + e.key + " icon=" + e.icon);
                     StatusBarNotification n = e.notification;
-                    pw.println("         pkg=" + n.getPackageName() + " id=" + n.getId() + " score=" + n.getScore());
-                    pw.println("         notification=" + n.getNotification());
-                    pw.println("         tickerText=\"" + n.getNotification().tickerText + "\"");
+                    pw.println(" pkg=" + n.getPackageName() + " id=" + n.getId() + " score=" + n.getScore());
+                    pw.println(" notification=" + n.getNotification());
+                    pw.println(" tickerText=\"" + n.getNotification().tickerText + "\"");
                 }
             }
 
             int N = mStatusIcons.getChildCount();
-            pw.println("  system icons: " + N);
+            pw.println(" system icons: " + N);
             for (int i=0; i<N; i++) {
                 StatusBarIconView ic = (StatusBarIconView) mStatusIcons.getChildAt(i);
-                pw.println("    [" + i + "] icon=" + ic);
+                pw.println(" [" + i + "] icon=" + ic);
             }
 
             if (false) {
@@ -2303,7 +2304,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode {
         }
 
         if (DEBUG_GESTURES) {
-            pw.print("  status bar gestures: ");
+            pw.print(" status bar gestures: ");
             mGestureRec.dump(fd, pw, args);
         }
 
@@ -2311,7 +2312,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode {
     }
 
     private static void dumpBarTransitions(PrintWriter pw, String var, BarTransitions transitions) {
-        pw.print("  "); pw.print(var); pw.print(".BarTransitions.mMode=");
+        pw.print(" "); pw.print(var); pw.print(".BarTransitions.mMode=");
         pw.println(BarTransitions.modeToString(transitions.getMode()));
     }
 
@@ -2642,12 +2643,12 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode {
     }
 
     /**
-     * Reload some of our resources when the configuration changes.
-     *
-     * We don't reload everything when the configuration changes -- we probably
-     * should, but getting that smooth is tough.  Someday we'll fix that.  In the
-     * meantime, just update the things that we know change.
-     */
+* Reload some of our resources when the configuration changes.
+*
+* We don't reload everything when the configuration changes -- we probably
+* should, but getting that smooth is tough. Someday we'll fix that. In the
+* meantime, just update the things that we know change.
+*/
     void updateResources() {
         final Context context = mContext;
         final Resources res = context.getResources();
@@ -2674,7 +2675,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode {
             R.dimen.status_bar_icon_padding);
 
         if (newIconHPadding != mIconHPadding || newIconSize != mIconSize) {
-//            Log.d(TAG, "size=" + newIconSize + " padding=" + newIconHPadding);
+// Log.d(TAG, "size=" + newIconSize + " padding=" + newIconHPadding);
             mIconHPadding = newIconHPadding;
             mIconSize = newIconSize;
             //reloadAllNotificationIcons(); // reload the tray
@@ -2720,7 +2721,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode {
         }
 
         mHeadsUpNotificationDecay = res.getInteger(R.integer.heads_up_notification_decay);
-        mRowHeight =  res.getDimensionPixelSize(R.dimen.notification_row_min_height);
+        mRowHeight = res.getDimensionPixelSize(R.dimen.notification_row_min_height);
 
         if (false) Log.v(TAG, "updateResources");
     }
@@ -2884,237 +2885,239 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode {
 
     boolean black = false;
 
-	public void transform(boolean isBlack) {
-		if (isBlack && !black) {
-			mCurrentColor = mBlackColor;
-			refresh();
-			black = true;
-		} else if (!isBlack && black) {
-			mCurrentColor = mWhiteColor;
-			refresh();
-			black = false;
-		}
-		if (mMustChange) {
-			if (isBlack) {
-				mCurrentColor = mBlackColor;
-				refresh();
-			} else {
-				mCurrentColor = mWhiteColor;
-				refresh();
-			}
-            mMustChange = false;
+public void transform(boolean isBlack) {
+if (isBlack && !black) {
+mCurrentColor = mBlackColor;
+refresh();
+black = true;
+} else if (!isBlack && black) {
+mCurrentColor = mWhiteColor;
+refresh();
+black = false;
+}
+if (mMustChange) {
+if (isBlack) {
+mCurrentColor = mBlackColor;
+refresh();
+} else {
+mCurrentColor = mWhiteColor;
+refresh();
+}
         }
     }
 
-	private void updateBackground() {
-		try {
-			if (!mScreenOn) {
-				return;
-			}
-			if (mHeadsUpVerticalOffset == 0.0f) {
-				mTransparent = true;
-				mStatusBarView.setBackgroundColor(Color.TRANSPARENT);
-			}
-			int mSysColor = getSysColor();
+private void updateBackground() {
+try {
+if (!mScreenOn) {
+return;
+}
+if (mHeadsUpVerticalOffset == 0.0f) {
+mTransparent = true;
+mStatusBarView.setBackgroundColor(Color.TRANSPARENT);
+}
+int mSysColor = getSysColor();
             if (mSysColor == mStatusBarColor) {
-			    if(!mMustChange) {
+if(!mMustChange) {
                     updateBackgroundDelayed();
                     return;
                 }
+                mMustChange = false;
             } else {
-				mStatusBarColor = mSysColor;
-			}
-            mBattery.updateBattery();
+mStatusBarColor = mSysColor;
+}
             transform(isGray(mSysColor));
             if (mTransparent) {
-				mStatusBarView.setBackgroundColor(Color.TRANSPARENT);
-				updateBackgroundDelayed();
-				return;
-			}
-			mStatusBarView.setBackgroundColor(mSysColor);
-			updateBackgroundDelayed();
-		} catch (Exception e) {
-			updateBackgroundDelayed();
-		}
-	}
+mStatusBarView.setBackgroundColor(Color.TRANSPARENT);
+updateBackgroundDelayed();
+return;
+}
+mStatusBarView.setBackgroundColor(mSysColor);
+updateBackgroundDelayed();
+} catch (Exception e) {
+updateBackgroundDelayed();
+}
+}
 
-	private void updateColor() {
+private void updateColor() {
         mMustChange = true;
         mBlackColor = Settings.System.getInt(mContext.getContentResolver(),String.format(SysWhiteKey, mPackageName), Color.BLACK);
-		mWhiteColor = Settings.System.getInt(mContext.getContentResolver(),String.format(SysDarkKey, mPackageName), Color.WHITE);
-	}
+mWhiteColor = Settings.System.getInt(mContext.getContentResolver(),String.format(SysDarkKey, mPackageName), Color.WHITE);
+}
 
-	private float getDegreesForRotation(int value) {
-		switch (value) {
-		case Surface.ROTATION_90:
-			return 360f - 90f;
-		case Surface.ROTATION_180:
-			return 360f - 180f;
-		case Surface.ROTATION_270:
-			return 360f - 270f;
-		}
-		return 0f;
-	}
+private float getDegreesForRotation(int value) {
+switch (value) {
+case Surface.ROTATION_90:
+return 360f - 90f;
+case Surface.ROTATION_180:
+return 360f - 180f;
+case Surface.ROTATION_270:
+return 360f - 270f;
+}
+return 0f;
+}
 
-	private boolean isGray(int pixel) {
-		int A, R, G, B;
-		A = Color.alpha(pixel);
-		R = Color.red(pixel);
-		G = Color.green(pixel);
-		B = Color.blue(pixel);
-		int gray = (int) (0.2989 * R + 0.5870 * G + 0.1140 * B);
+private boolean isGray(int pixel) {
+int A, R, G, B;
+A = Color.alpha(pixel);
+R = Color.red(pixel);
+G = Color.green(pixel);
+B = Color.blue(pixel);
+int gray = (int) (0.2989 * R + 0.5870 * G + 0.1140 * B);
 
-		// use 128 as threshold, above -> white, below -> black
-		if (gray > 210)
-			return true;
-		return false;
-	}
+// use 128 as threshold, above -> white, below -> black
+if (gray > 210)
+return true;
+return false;
+}
 
-	private int getSysColor() {
-		Matrix mDisplayMatrix = new Matrix();
-		DisplayMetrics mDisplayMetrics = new DisplayMetrics();
-		mDisplay.getRealMetrics(mDisplayMetrics);
-		float[] dims = { 1, mDisplayMetrics.heightPixels };
-		int rot = mDisplay.getRotation();
-		int mSfHwRotation = android.os.SystemProperties.getInt(
-				"ro.sf.hwrotation", 0) / 90;
-		rot = (rot + mSfHwRotation) % 4;
-		float degrees = getDegreesForRotation(rot);
-		boolean requiresRotation = (degrees > 0);
-		if (requiresRotation) {
-			mDisplayMatrix.reset();
-			mDisplayMatrix.preRotate(-degrees);
-			mDisplayMatrix.mapPoints(dims);
-			dims[0] = Math.abs(dims[0]);
-			dims[1] = Math.abs(dims[1]);
-		}
-		Bitmap captured = SurfaceControl.screenshot((int) dims[0],
-				(int) dims[1]);
-		Bitmap cropped = null;
-		try {
-			if(mTransparent) {
-				if (!requiresRotation)
-					cropped = Bitmap.createBitmap(captured, 0,
-							(int) (getStatusBarHeight() * 0.99), 1, 1);
-				else if ((int) degrees == 90)
-					cropped = Bitmap.createBitmap(captured,
-							(int) (getStatusBarHeight() * 0.99), 0, 1, 1);
-				else if ((int) degrees == 180)
-					cropped = Bitmap.createBitmap(captured, 0, (int) dims[1]
-							- (int) (getStatusBarHeight() * 0.99), 1, 1);
-				else if ((int) degrees == 270)
-					cropped = Bitmap.createBitmap(captured, (int) dims[0]
-							- (int) (getStatusBarHeight() * 0.99), 0, 1, 1);
-			} else {
-				if (!requiresRotation)
-					cropped = Bitmap.createBitmap(captured, 0,
-							(int) (getStatusBarHeight() * 1.04), 1, 1);
-				else if ((int) degrees == 90)
-					cropped = Bitmap.createBitmap(captured,
-							(int) (getStatusBarHeight() * 1.08), 0, 1, 1);
-				else if ((int) degrees == 180)
-					cropped = Bitmap.createBitmap(captured, 0, (int) dims[1]
-							- (int) (getStatusBarHeight() * 1.04), 1, 1);
-				else if ((int) degrees == 270)
-					cropped = Bitmap.createBitmap(captured, (int) dims[0]
-							- (int) (getStatusBarHeight() * 1.08), 0, 1, 1);
-			}
-		} catch (Exception e) {
-			return Color.TRANSPARENT;
-		}
-		captured.recycle();
-		captured = null;
-		int color = cropped.getPixel(0, 0);
-		cropped.recycle();
-		cropped = null;
-		return color;
-	}
+private int getSysColor() {
+Matrix mDisplayMatrix = new Matrix();
+DisplayMetrics mDisplayMetrics = new DisplayMetrics();
+mDisplay.getRealMetrics(mDisplayMetrics);
+float[] dims = { 1, mDisplayMetrics.heightPixels };
+int rot = mDisplay.getRotation();
+int mSfHwRotation = android.os.SystemProperties.getInt(
+"ro.sf.hwrotation", 0) / 90;
+rot = (rot + mSfHwRotation) % 4;
+float degrees = getDegreesForRotation(rot);
+boolean requiresRotation = (degrees > 0);
+if (requiresRotation) {
+mDisplayMatrix.reset();
+mDisplayMatrix.preRotate(-degrees);
+mDisplayMatrix.mapPoints(dims);
+dims[0] = Math.abs(dims[0]);
+dims[1] = Math.abs(dims[1]);
+}
+Bitmap captured = SurfaceControl.screenshot((int) dims[0],
+(int) dims[1]);
+Bitmap cropped = null;
+try {
+if(mTransparent) {
+if (!requiresRotation)
+cropped = Bitmap.createBitmap(captured, 0,
+(int) (getStatusBarHeight() * 0.99), 1, 1);
+else if ((int) degrees == 90)
+cropped = Bitmap.createBitmap(captured,
+(int) (getStatusBarHeight() * 0.99), 0, 1, 1);
+else if ((int) degrees == 180)
+cropped = Bitmap.createBitmap(captured, 0, (int) dims[1]
+- (int) (getStatusBarHeight() * 0.99), 1, 1);
+else if ((int) degrees == 270)
+cropped = Bitmap.createBitmap(captured, (int) dims[0]
+- (int) (getStatusBarHeight() * 0.99), 0, 1, 1);
+} else {
+if (!requiresRotation)
+cropped = Bitmap.createBitmap(captured, 0,
+(int) (getStatusBarHeight() * 1.04), 1, 1);
+else if ((int) degrees == 90)
+cropped = Bitmap.createBitmap(captured,
+(int) (getStatusBarHeight() * 1.08), 0, 1, 1);
+else if ((int) degrees == 180)
+cropped = Bitmap.createBitmap(captured, 0, (int) dims[1]
+- (int) (getStatusBarHeight() * 1.04), 1, 1);
+else if ((int) degrees == 270)
+cropped = Bitmap.createBitmap(captured, (int) dims[0]
+- (int) (getStatusBarHeight() * 1.08), 0, 1, 1);
+}
+} catch (Exception e) {
+return Color.TRANSPARENT;
+}
+captured.recycle();
+captured = null;
+int color = cropped.getPixel(0, 0);
+cropped.recycle();
+cropped = null;
+return color;
+}
 
-	private void setStatusBarColor() {
-		for (ImageView icon : mIcons) {
-			if (icon != null) {
-				icon.setColorFilter(mCurrentColor, PorterDuff.Mode.MULTIPLY);
-			} else {
-				mIcons.remove(icon);
-			}
-		}
+private void setStatusBarColor() {
+for (ImageView icon : mIcons) {
+if (icon != null) {
+icon.setColorFilter(mCurrentColor, PorterDuff.Mode.MULTIPLY);
+} else {
+mIcons.remove(icon);
+}
+}
 
-		for (TextView tv : mTexts) {
-			if (tv != null) {
-				tv.mTransColor = false;
+for (TextView tv : mTexts) {
+if (tv != null) {
+tv.mTransColor = false;
                 tv.setTextColor(mCurrentColor);
-			} else {
-				mTexts.remove(tv);
-			}
-		}
+} else {
+mTexts.remove(tv);
+}
+}
         mBattery.mChameleonBatteryColor = mCurrentColor;
-		mBattery.updateSettings();
+        mBattery.mChameleonBoltColor = mStatusBarColor;
+        mBattery.updateBattery();
+        mBattery.invalidate();
     }
 
-	private void updateBackgroundDelayed() {
-		mHandler.postDelayed(new Runnable() {
-			public void run() {
-				updateBackground();
-			}
-		}, BACKGROUND_UPDATE_DELAY_MS);
-	}
-
-	public void addIcon(ImageView iv) {
-		if (!mIcons.contains(iv)) {
-			iv.setColorFilter(mCurrentColor, PorterDuff.Mode.MULTIPLY);
-			mIcons.add(iv);
-		}
-	}
-
-	public void addText(TextView tv) {
-		if (!mTexts.contains(tv)) {
-			tv.setTextColor(mCurrentColor);
-			mTexts.add(tv);
-		}
-	}
-
-	private void refresh() {
-		setColorForLayout(mStatusIcons, mCurrentColor, PorterDuff.Mode.MULTIPLY);
-		setStatusBarColor();
-	}
-
-	private void setColorForLayout(LinearLayout statusIcons, int color,
-			PorterDuff.Mode mode) {
-		if (color == 0)
-			return;
-
-		if (statusIcons == null)
-			return;
-
-		for (int i = 0; i < statusIcons.getChildCount(); i++) {
-			try {
-				ImageView view = (ImageView) statusIcons.getChildAt(i);
-				if (view != null) {
-					view.setColorFilter(color, mode);
-				}
-			} catch (ClassCastException e) {
-
-			}
-		}
-	}
-
-	public void setColorToAllTextSwitcherChildren(TextSwitcher switcher) {
-		if (mCurrentColor != 0) {
-			for (int i = 0; i < switcher.getChildCount(); i++) {
-				TextView view = (TextView) switcher.getChildAt(i);
-				view.setTextColor(mCurrentColor);
-				addText(view);
-			}
-		}
-	}
-
-	public void setColorToAllImageSwitcherChildren(ImageSwitcher switcher) {
-		if (mCurrentColor != 0) {
-			for (int i = 0; i < switcher.getChildCount(); i++) {
-				ImageView view = (ImageView) switcher.getChildAt(i);
-				view.setColorFilter(mCurrentColor, PorterDuff.Mode.MULTIPLY);
-				addIcon(view);
-			}
-		}
-	}
+private void updateBackgroundDelayed() {
+mHandler.postDelayed(new Runnable() {
+public void run() {
+updateBackground();
 }
+}, BACKGROUND_UPDATE_DELAY_MS);
+}
+
+public void addIcon(ImageView iv) {
+if (!mIcons.contains(iv)) {
+iv.setColorFilter(mCurrentColor, PorterDuff.Mode.MULTIPLY);
+mIcons.add(iv);
+}
+}
+
+public void addText(TextView tv) {
+if (!mTexts.contains(tv)) {
+tv.setTextColor(mCurrentColor);
+mTexts.add(tv);
+}
+}
+
+private void refresh() {
+setColorForLayout(mStatusIcons, mCurrentColor, PorterDuff.Mode.MULTIPLY);
+setStatusBarColor();
+}
+
+private void setColorForLayout(LinearLayout statusIcons, int color,
+PorterDuff.Mode mode) {
+if (color == 0)
+return;
+
+if (statusIcons == null)
+return;
+
+for (int i = 0; i < statusIcons.getChildCount(); i++) {
+try {
+ImageView view = (ImageView) statusIcons.getChildAt(i);
+if (view != null) {
+view.setColorFilter(color, mode);
+}
+} catch (ClassCastException e) {
+
+}
+}
+}
+
+public void setColorToAllTextSwitcherChildren(TextSwitcher switcher) {
+if (mCurrentColor != 0) {
+for (int i = 0; i < switcher.getChildCount(); i++) {
+TextView view = (TextView) switcher.getChildAt(i);
+view.setTextColor(mCurrentColor);
+addText(view);
+}
+}
+}
+
+public void setColorToAllImageSwitcherChildren(ImageSwitcher switcher) {
+if (mCurrentColor != 0) {
+for (int i = 0; i < switcher.getChildCount(); i++) {
+ImageView view = (ImageView) switcher.getChildAt(i);
+view.setColorFilter(mCurrentColor, PorterDuff.Mode.MULTIPLY);
+addIcon(view);
+}
+}
+}
+}
+
