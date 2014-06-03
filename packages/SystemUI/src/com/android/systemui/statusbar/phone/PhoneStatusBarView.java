@@ -49,6 +49,7 @@ public class PhoneStatusBarView extends PanelBar {
     PanelView mNotificationPanel, mSettingsPanel;
     private boolean mShouldFade;
     private final PhoneStatusBarTransitions mBarTransitions;
+    private QuickSettingsContainerView mQSContainer;
     private GestureDetector mDoubleTapGesture;
 
     public PhoneStatusBarView(Context context, AttributeSet attrs) {
@@ -184,6 +185,13 @@ public class PhoneStatusBarView extends PanelBar {
     @Override
     public void onAllPanelsCollapsed() {
         super.onAllPanelsCollapsed();
+
+        mQSContainer = (QuickSettingsContainerView)
+            mBar.mStatusBarWindow.findViewById(R.id.quick_settings_container);
+        if(mQSContainer != null && mQSContainer.isEditModeEnabled()) {
+            mQSContainer.setEditModeEnabled(false);
+        }
+
         // give animations time to settle
         mBar.makeExpandedInvisibleSoon();
         mFadingPanel = null;
