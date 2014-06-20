@@ -196,6 +196,38 @@
             android:taskAffinity="com.android.systemui.net"
             android:excludeFromRecents="true" />
 
+        <!-- platform logo Hazy egg activity -->
+        <activity
+            android:name=".hazy.HazyCase"
+            android:exported="true"
+            android:label="@string/hazy_case"
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"
+            android:hardwareAccelerated="true"
+            android:launchMode="singleInstance"
+            android:screenOrientation="locked"
+            android:process=":sweetsweetdesserts"
+            android:excludeFromRecents="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="com.android.internal.category.HAZYLOGO" />
+            </intent-filter>
+        </activity>
+
+        <!-- a gallery of delicious treats -->
+        <service
+            android:name=".hazy.HazyCaseDream"
+            android:exported="true"
+            android:label="@string/hazy_case"
+            android:enabled="false"
+            android:process=":sweetsweetdesserts"
+            >
+            <intent-filter>
+                <action android:name="android.service.dreams.DreamService" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </service>
+
         <!-- platform logo easter egg activity -->
         <activity
             android:name=".DessertCase"
