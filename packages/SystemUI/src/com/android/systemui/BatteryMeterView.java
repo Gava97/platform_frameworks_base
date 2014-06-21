@@ -453,15 +453,6 @@ public class BatteryMeterView extends View implements DemoMode {
             mBoltPaint.setColor(mChameleonBoltColor);
             mTextPaint.setColor(mBoltPaint.getColor());
         }
-
-        if (tracker.plugged) {
-            if (mPercentageChargingColor == -2) {
-            mBoltPaint.setColor(mChameleonBoltColor);
-            }
-            mTextPaint.setColor(mBoltPaint.getColor());
-        } else {
-            mTextPaint.setColor(mChameleonBoltColor);
-        } 
         postInvalidate();
     }
 }

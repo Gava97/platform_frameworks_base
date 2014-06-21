@@ -2993,7 +2993,6 @@ refresh();
 mCurrentColor = mWhiteColor;
 refresh();
 }
-        mMustChange = false;
         }
     }
 
@@ -3012,11 +3011,10 @@ if(!mMustChange) {
                     updateBackgroundDelayed();
                     return;
                 }
+                mMustChange = false;
             } else {
 mStatusBarColor = mSysColor;
 }
-            mBattery.mChameleonBoltColor = mStatusBarColor;
-            mBattery.updateBattery();
             transform(isGray(mSysColor));
             if (mTransparent) {
 mStatusBarView.setBackgroundColor(Color.TRANSPARENT);
@@ -3139,9 +3137,10 @@ tv.mTransColor = false;
 mTexts.remove(tv);
 }
 }
-        mCircleBattery.setCircleColor(mCurrentColor);
         mBattery.mChameleonBatteryColor = mCurrentColor;
-        mBattery.updateSettings();
+        mBattery.mChameleonBoltColor = mStatusBarColor;
+        mBattery.updateBattery();
+        mBattery.invalidate();
     }
 
 private void updateBackgroundDelayed() {
@@ -3211,3 +3210,4 @@ addIcon(view);
 }
 }
 }
+
