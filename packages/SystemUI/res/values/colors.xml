@@ -40,7 +40,4 @@
     <color name="batterymeterqs_bolt_color">#FFFFFFFF</color><!-- 100% white -->
     <color name="status_bar_clock_color">#FFFFFFFF</color>
     <drawable name="trasparent_status_bar">#00000000</drawable><!-- 100% trasparent -->
-    <color name="batterymeter_percent_color">#FFFFFFFF</color>
-    <color name="batterymeter_percent_warn_color">#FFFF0000</color><!-- red -->
-    <color name="batterymeter_percent_critical_color">#FFFFFF00</color><!-- yellow -->
 </resources>
