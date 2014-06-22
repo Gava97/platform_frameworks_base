@@ -93,6 +93,7 @@ import android.widget.TextView;
 
 import com.android.internal.statusbar.StatusBarIcon;
 import com.android.systemui.BatteryMeterView;
+import com.android.systemui.BatteryCircleMeterView;
 import com.android.systemui.DemoMode;
 import com.android.systemui.EventLogTags;
 import com.android.systemui.R;
@@ -280,6 +281,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode {
     DisplayMetrics mDisplayMetrics = new DisplayMetrics();
 
     private BatteryMeterView mBattery;
+    private BatteryCircleMeterView mCircleBattery;
 
     //Chameleon
     private int mStatusBarColor;
@@ -311,9 +313,52 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode {
         }
     };
 
+    class SettingsObserver extends ContentObserver {
+        SettingsObserver(Handler handler) {
+            super(handler);
+        }
+
+        void observe() {
+            ContentResolver resolver = mContext.getContentResolver();
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.STATUS_BAR_BATTERY),
+                    false, this, UserHandle.USER_ALL);
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.STATUS_BAR_BATTERY_COLOR),
+                    false, this, UserHandle.USER_ALL);
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.STATUS_BAR_BATTERY_TEXT_COLOR),
+                    false, this, UserHandle.USER_ALL);
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.STATUS_BAR_BATTERY_TEXT_CHARGING_COLOR),
+                    false, this, UserHandle.USER_ALL);
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.STATUS_BAR_CIRCLE_BATTERY_ANIMATIONSPEED),
+                    false, this, UserHandle.USER_ALL);
+            update();
+        }
+
+        @Override
+        public void onChange(boolean selfChange) {
+            update();
+        }
+
+        public void update() {
+            ContentResolver resolver = mContext.getContentResolver();
+            boolean autoBrightness = Settings.System.getInt(
+                    resolver, Settings.System.SCREEN_BRIGHTNESS_MODE, 0) ==
+                    Settings.System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC;
+        updateBatteryIcons();
+        }
+    }
+
     private void updateBatteryIcons() {
-        if (mBattery != null) {
+        if (mQS != null) {
+            mQS.updateBattery();
+        }
+        if (mBattery != null && mCircleBattery != null) {
             mBattery.updateSettings();
+            mCircleBattery.updateSettings();
         }
     }
 
@@ -588,7 +633,6 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode {
         final SignalClusterView signalCluster =
                 (SignalClusterView)mStatusBarView.findViewById(R.id.signal_cluster);
 
-
         mNetworkController.addSignalCluster(signalCluster);
         signalCluster.setNetworkController(mNetworkController);
         signalCluster.setStatusBar(this);
@@ -727,6 +771,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode {
         resetUserSetupObserver();
 
         mBattery = (BatteryMeterView) mStatusBarView.findViewById(R.id.battery);
+        mCircleBattery = (BatteryCircleMeterView) mStatusBarView.findViewById(R.id.circle_battery);
         updateBatteryIcons();
 
         return mStatusBarView;
@@ -2971,11 +3016,12 @@ if(!mMustChange) {
                     updateBackgroundDelayed();
                     return;
                 }
-                mMustChange = false;
             } else {
 mStatusBarColor = mSysColor;
 }
-            transform(isGray(mSysColor));
+            mBattery.mChameleonBoltColor = mStatusBarColor;
+            mBattery.updateBattery();
+  	        transform(isGray(mSysColor));
             if (mTransparent) {
 mStatusBarView.setBackgroundColor(Color.TRANSPARENT);
 updateBackgroundDelayed();
@@ -3097,11 +3143,10 @@ tv.mTransColor = false;
 mTexts.remove(tv);
 }
 }
-        mBattery.mChameleonBatteryColor = mCurrentColor;
-        mBattery.mChameleonBoltColor = mStatusBarColor;
-        mBattery.updateBattery();
-        mBattery.invalidate();
-    }
+    	mCircleBattery.setCircleColor(mCurrentColor);
+		mBattery.mChameleonBatteryColor = mCurrentColor;
+		mBattery.updateSettings();
+}
 
 private void updateBackgroundDelayed() {
 mHandler.postDelayed(new Runnable() {
