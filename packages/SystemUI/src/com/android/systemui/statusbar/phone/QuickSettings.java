@@ -595,7 +595,7 @@ class QuickSettings {
                 } else if(Tile.BATTERY.toString().equals(tile.toString())) { // Battery
                     mBatteryTile = (QuickSettingsTileView)
                             inflater.inflate(R.layout.quick_settings_tile, parent, false);
-                    batteryTile.setTileId(Tile.BATTERY);
+                    mBatteryTile.setTileId(Tile.BATTERY);
                     mBatteryTile.setContent(R.layout.quick_settings_tile_battery, inflater);
                     mBattery = (BatteryMeterView) mBatteryTile.findViewById(R.id.image);
                     mBattery.setVisibility(View.GONE);
@@ -636,7 +636,7 @@ class QuickSettings {
                         }
                     });
                     parent.addView(mBatteryTile);
-                    if(addMissing) batteryTile.setVisibility(View.GONE);
+                    if(addMissing) mBatteryTile.setVisibility(View.GONE);
                 } else if(Tile.IMMERSIVE.toString().equals(tile.toString())) { // Immersive mode
                     final QuickSettingsBasicTile immersiveTile
                             = new QuickSettingsBasicTile(mContext);

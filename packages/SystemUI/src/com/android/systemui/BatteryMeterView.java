@@ -51,7 +51,7 @@ public class BatteryMeterView extends View implements DemoMode {
 
     public static final boolean ENABLE_PERCENT = true;
     public static final boolean SINGLE_DIGIT_PERCENT = false;
-    public static final boolean SHOW_100_PERCENT = false;
+    public boolean SHOW_100_PERCENT = false;
 
     public static final int BATTERY_STYLE_NORMAL = 0;
     public static final int BATTERY_STYLE_PERCENT               = 1;
