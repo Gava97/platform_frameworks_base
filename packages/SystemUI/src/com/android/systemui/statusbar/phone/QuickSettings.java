@@ -64,7 +64,7 @@ import android.view.WindowManagerGlobal;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.android.systemui.BatteryMeterView;
+import com.android.systemui.BatteryMeterQsView;
 import com.android.systemui.BatteryCircleMeterView;
 import com.android.systemui.R;
 import com.android.systemui.statusbar.phone.QuickSettingsModel.ActivityState;
@@ -112,7 +112,7 @@ class QuickSettings {
     public static final String DEFAULT_TILES = Tile.USER + DELIMITER + Tile.BRIGHTNESS
         + DELIMITER + Tile.SETTINGS + DELIMITER + Tile.WIFI + DELIMITER + Tile.RSSI
         + DELIMITER + Tile.ROTATION + DELIMITER + Tile.BATTERY + DELIMITER + Tile.IMMERSIVE
-        + DELIMITER + Tile.BLUETOOTH + DELIMITER + Tile.LOCATION;
+        + DELIMITER + Tile.BLUETOOTH + DELIMITER + Tile.LOCATION + DELIMITER + Tile.AIRPLANE;
 
     private Context mContext;
     private PanelBar mBar;
@@ -142,7 +142,7 @@ class QuickSettings {
     private ConnectivityManager mConnectivityManager;
 
     private QuickSettingsTileView mBatteryTile;
-    private BatteryMeterView mBattery;
+    private BatteryMeterQsView mBattery;
     private BatteryCircleMeterView mCircleBattery;
     private boolean mBatteryHasPercent;
 
@@ -344,10 +344,10 @@ class QuickSettings {
         mBattery.updateSettings();
         int batteryStyle = Settings.System.getIntForUser(mContext.getContentResolver(),
             Settings.System.STATUS_BAR_BATTERY, 0, UserHandle.USER_CURRENT);
-        mBatteryHasPercent = batteryStyle == BatteryMeterView.BATTERY_STYLE_ICON_PERCENT
-            || batteryStyle == BatteryMeterView.BATTERY_STYLE_PERCENT
-            || batteryStyle == BatteryMeterView.BATTERY_STYLE_CIRCLE_PERCENT
-            || batteryStyle == BatteryMeterView.BATTERY_STYLE_DOTTED_CIRCLE_PERCENT;
+        mBatteryHasPercent = batteryStyle == BatteryMeterQsView.BATTERY_STYLE_ICON_PERCENT
+            || batteryStyle == BatteryMeterQsView.BATTERY_STYLE_PERCENT
+            || batteryStyle == BatteryMeterQsView.BATTERY_STYLE_CIRCLE_PERCENT
+            || batteryStyle == BatteryMeterQsView.BATTERY_STYLE_DOTTED_CIRCLE_PERCENT;
         mModel.refreshBatteryTile();
     }
 
@@ -597,7 +597,7 @@ class QuickSettings {
                             inflater.inflate(R.layout.quick_settings_tile, parent, false);
                     mBatteryTile.setTileId(Tile.BATTERY);
                     mBatteryTile.setContent(R.layout.quick_settings_tile_battery, inflater);
-                    mBattery = (BatteryMeterView) mBatteryTile.findViewById(R.id.image);
+                    mBattery = (BatteryMeterQsView) mBatteryTile.findViewById(R.id.image);
                     mBattery.setVisibility(View.GONE);
                     mCircleBattery = (BatteryCircleMeterView) mBatteryTile.findViewById(R.id.circle_battery);
                     updateBattery();
