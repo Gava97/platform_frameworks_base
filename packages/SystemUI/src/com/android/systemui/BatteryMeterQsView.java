@@ -521,11 +521,12 @@ public class BatteryMeterQsView extends View implements DemoMode {
                 mBoltPaint.setColor(mPercentageChargingColor);
             }
             mTextPaint.setColor(mBoltPaint.getColor());
-        if (mBatteryStyle == BATTERY_STYLE_ICON_PERCENT) {
+            if (mBatteryStyle == BATTERY_STYLE_ICON_PERCENT) {
             mTextPaint.setColor(Color.RED);
-        } else {
-            mTextPaint.setColor(mPercentageColor);
+            } else {
+                mTextPaint.setColor(mPercentageColor);
+            }
+            postInvalidate();
         }
-        postInvalidate();
     }
 }
