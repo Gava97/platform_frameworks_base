@@ -2347,7 +2347,14 @@ public final class Settings {
          */
         public static final String HEADS_UP_CUSTOM_VALUES = "heads_up_custom_values";
 
-        /**
+                /**
+         * Which applications to disable heads up notifications for
+         *
+         * @hide
+         */
+        public static final String HEADS_UP_BLACKLIST_VALUES = "heads_up_blacklist_values";
+
+/**
 * Log raw orientation data from {@link WindowOrientationListener} for use with the
 * orientationplot.py tool.
 * 0 = no
