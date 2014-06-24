@@ -593,7 +593,7 @@ class QuickSettings {
                             } else {
                                 t = batteryState.pluggedIn
                                     ? mContext.getString(
-                                            R.string.quick_settings_battery_charging:label,
+                                            R.string.quick_settings_battery_charging_label,
                                             batteryState.batteryLevel)
                                         : mContext.getString(
                                             R.string.status_bar_settings_battery_meter_format,
