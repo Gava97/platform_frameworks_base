@@ -1960,7 +1960,21 @@ public final class Settings {
             "notifications_use_ring_volume";
 
         /**
-* Whether silent mode should allow vibration feedback. This is used
+         * Volume Adjust Sounds Enable, This is the noise made when using volume hard buttons
+         * Defaults to 1 - sounds enabled
+         * @hide
+         */
+        public static final String VOLUME_ADJUST_SOUNDS_ENABLED = "volume_adjust_sounds_enabled";
+
+        /**
+         * Boolean value whether to link ringtone and notification volumes
+         *
+         * @hide
+         */
+        public static final String VOLUME_LINK_NOTIFICATION = "volume_link_notification";
+
+        /**
+         * Whether silent mode should allow vibration feedback. This is used
 * internally in AudioService and the Sound settings activity to
 * coordinate decoupling of vibrate and silent modes. This setting
 * will likely be removed in a future release with support for
