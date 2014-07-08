@@ -2741,6 +2741,12 @@ public final class Settings {
 
 
         /**
+         * Whether to wake the screen with the volume keys, the value is boolean.
+         * @hide
+         */
+        public static final String VOLUME_WAKE_SCREEN = "volume_wake_screen";
+
+        /**
          * Quick settings tiles to show on status bar
          * @hide
          */
