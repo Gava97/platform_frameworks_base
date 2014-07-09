@@ -117,7 +117,7 @@ class QuickSettings {
         + DELIMITER + Tile.SETTINGS + DELIMITER + Tile.WIFI + DELIMITER + Tile.RSSI
         + DELIMITER + Tile.ROTATION + DELIMITER + Tile.BATTERY + DELIMITER + Tile.IMMERSIVE
         + DELIMITER + Tile.BLUETOOTH + DELIMITER + Tile.LOCATION + DELIMITER + Tile.AIRPLANE
-        + DELIMETER + Tile.HEADSUP;
+        + DELIMITER + Tile.HEADSUP;
 
     private Context mContext;
     private PanelBar mBar;
@@ -720,7 +720,7 @@ class QuickSettings {
                     final QuickSettingsBasicTile headsupTile
                             = new QuickSettingsBasicTile(mContext);
                     headsupTile.setTileId(Tile.HEADSUP);
-                    mModel.addHeadsUpModeTile(headsupTile,
+                    mModel.addHeadsUpTile(headsupTile,
                             new QuickSettingsModel.RefreshCallback() {
                         @Override
                         public void refreshView(QuickSettingsTileView unused, State state) {
