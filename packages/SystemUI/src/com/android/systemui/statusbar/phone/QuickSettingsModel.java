@@ -610,10 +610,9 @@ class QuickSettingsModel implements BluetoothStateChangeCallback,
     }
 
     private void setHeadsUpState(boolean enabled) {
-        Settings.System.putInt(mContext.getContentResolver(), Settings.System.HEADS_UP_NOTIFICATION, !getEnabled() ? 1 : 0);
+        Settings.System.putInt(mContext.getContentResolver(), Settings.System.HEADS_UP_NOTIFICATION, enabled ? 1 : 0);
     }
-    
-    @Override
+
     public void onHeadsUpChanged(boolean enabled) {
         // TODO: If view is in awaiting state, disable
         Resources r = mContext.getResources();
