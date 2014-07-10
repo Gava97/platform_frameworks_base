@@ -645,11 +645,9 @@ class QuickSettingsModel implements BluetoothStateChangeCallback,
         mHeadsUpTile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mHeadsUpState.enabled) {
-                    setHeadsUpState(false);
-                } else {
-                    setHeadsUpState(true);
-                }
+                Settings.System.putInt(mContext.getContentResolver(),
+                        Settings.System.HEADS_UP_NOTIFICATION, !getEnabled() ? 1 : 0);
+                updateTile();
             }
         });
         mHeadsUpCallback = cb;
@@ -658,19 +656,25 @@ class QuickSettingsModel implements BluetoothStateChangeCallback,
         onHeadsUpChanged(headsupMode != 0);
     }
 
-    private void setHeadsUpState(boolean enabled) {
-        Settings.System.putInt(mContext.getContentResolver(), Settings.System.HEADS_UP_NOTIFICATION, enabled ? 1 : 0);
+    @Override
+    public void onChangeUri(ContentResolver resolver, Uri uri) {
+        updateResources();
     }
 
-    public void onHeadsUpChanged(boolean enabled) {
-        // TODO: If view is in awaiting state, disable
-        Resources r = mContext.getResources();
-        mHeadsUpState.enabled = enabled;
-        mHeadsUpState.iconId = (enabled ?
-                R.drawable.ic_qs_heads_up_on :
-                R.drawable.ic_qs_heads_up_off);
-        mHeadsUpState.label = r.getString(R.string.quick_settings_heads_up_label);
-        mHeadsUpCallback.refreshView(mHeadsUpTile, mHeadsUpState);
+    private synchronized void updateTile() {
+        if (getEnabled()) {
+            mDrawable = R.drawable.ic_qs_heads_up_on;
+            mLabel = mContext.getString(R.string.quick_settings_heads_up_on);
+        } else {
+            mDrawable = R.drawable.ic_qs_heads_up_off;
+            mLabel = mContext.getString(R.string.quick_settings_heads_up_off);
+        }
+    }
+
+    private boolean getEnabled() {
+        return Settings.System.getIntForUser(
+                mContext.getContentResolver(),
+                Settings.System.HEADS_UP_NOTIFICATION, 0, UserHandle.USER_CURRENT) == 1;
     }
 
     // Airplane Mode
