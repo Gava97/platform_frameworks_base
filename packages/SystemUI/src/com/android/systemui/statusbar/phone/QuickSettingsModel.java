@@ -653,6 +653,7 @@ class QuickSettingsModel implements BluetoothStateChangeCallback,
         mHeadsUpCallback = cb;
         int headsupMode = Settings.System.getInt(mContext.getContentResolver(),
                 Settings.System.HEADS_UP_NOTIFICATION, 0);
+        onHeadsUpChanged(headsupMode != 0);
     }
 
     @Override
