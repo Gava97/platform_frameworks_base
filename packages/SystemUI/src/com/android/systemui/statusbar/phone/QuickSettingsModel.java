@@ -653,13 +653,13 @@ class QuickSettingsModel implements BluetoothStateChangeCallback,
             }
         });
         mHeadsUpCallback = cb;
-        int headsupMode = Settings.System.getInt(mContext.getContentResolver(),
+        int headsup = Settings.System.getInt(mContext.getContentResolver(),
                 Settings.System.HEADS_UP_NOTIFICATION, 0);
-        onHeadsUpChanged(headsupMode != 0);
+        onHeadsUpChanged(headsup != 0);
     }
 
     private void setHeadsUpState(boolean enabled) {
-        Settings.System.putInt(mContext.getContentResolver(), Settings.System.HEADS_UP_NOTIFICATION, enabled ? 1 : 0);
+        Settings.System.getIntForUser(mContext.getContentResolver(), Settings.System.HEADS_UP_NOTIFICATION, 0, UserHandle.USER_CURRENT) == 1;
     }
 
     public void onHeadsUpChanged(boolean enabled) {
