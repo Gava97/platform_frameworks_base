@@ -110,8 +110,7 @@ class QuickSettings {
         AIRPLANE,
         BLUETOOTH,
         LOCATION,
-        SOUND,
-        HEADSUP
+        SOUND
     }
 
     public static final String NO_TILES = "NO_TILES";
@@ -120,7 +119,7 @@ class QuickSettings {
         + DELIMITER + Tile.SETTINGS + DELIMITER + Tile.WIFI + DELIMITER + Tile.RSSI
         + DELIMITER + Tile.ROTATION + DELIMITER + Tile.BATTERY + DELIMITER + Tile.IMMERSIVE
         + DELIMITER + Tile.SOUND + DELIMITER + Tile.BLUETOOTH + DELIMITER + Tile.LOCATION
-        + DELIMITER + Tile.AIRPLANE + DELIMITER + Tile.HEADSUP;
+        + DELIMITER + Tile.AIRPLANE;
 
     private Context mContext;
     private PanelBar mBar;
@@ -718,29 +717,6 @@ class QuickSettings {
                     });
                     parent.addView(airplaneTile);
                     if(addMissing) airplaneTile.setVisibility(View.GONE);
-                } else if(Tile.HEADSUP.toString().equals(tile.toString())) {
-                    // Heads_Up
-                    final QuickSettingsBasicTile headsupTile
-                            = new QuickSettingsBasicTile(mContext);
-                    headsupTile.setTileId(Tile.HEADSUP);
-                    mModel.addHeadsUpModeTile(headsupTile,
-                            new QuickSettingsModel.RefreshCallback() {
-                        @Override
-                        public void refreshView(QuickSettingsTileView unused, State state) {
-                            headsupTile.setImageResource(state.iconId);
-
-                            String headsupState = mContext.getString(
-                                    (state.enabled) ? R.string.accessibility_desc_on
-                                            : R.string.accessibility_desc_off);
-                            headsupTile.setContentDescription(
-                                    mContext.getString(
-                                            R.string.quick_settings_heads_up_label,
-                                            headsupState));
-                            headsupTile.setText(state.label);
-                        }
-                    });
-                    parent.addView(headsupTile);
-                    if(addMissing) headsupTile.setVisibility(View.GONE);
                 } else if(Tile.BLUETOOTH.toString().equals(tile.toString())) { // Bluetooth tile
                     if (mModel.deviceSupportsBluetooth()
                             || DEBUG_GONE_TILES) {
