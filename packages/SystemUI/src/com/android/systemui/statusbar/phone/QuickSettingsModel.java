@@ -1025,34 +1025,36 @@ class QuickSettingsModel implements BluetoothStateChangeCallback,
     }
 
     void onLocationExtraSettingsChanged(int mode, boolean locationEnabled) {
-        int locationIconId = locationEnabled
-                ? getLocationMode(updateLocationExtraTile) : R.drawable.ic_qs_location_accuracy_all_off;
-        mLocationExtraState.enabled = locationEnabled;
-        mLocationExtraState.label = getLocationMode(mContext.getResources(), mode);
-        mLocationExtraState.iconId = locationIconId;
-        mLocationExtraCallback.refreshView(mLocationExtraTile, mLocationExtraState);
+        if (DeviceUtils.deviceSupportsGps(mContext) && (mLocationExtraTile != null)) {
+            mLocationExtraState.enabled = locationEnabled;
+            mLocationExtraState.label = getLocationMode(mContext.getResources(), mode);
+            mLocationExtraState.iconId = getLocationDrawableMode(locationMode);
+            mLocationExtraCallback.refreshView(mLocationExtraTile, mLocationExtraState);
+        }
     }
 
-    private void getLocationMode(Resources r, int location) {
+    private String getLocationMode(Resources r, int location) {
         switch (location) {
             case Settings.Secure.LOCATION_MODE_SENSORS_ONLY:
-                updateLocationExtraTile(R.drawable.ic_qs_location_on_device,
-                        r.getString(R.string.quick_settings_location_mode_sensors_label));
-            break;
+                return r.getString(R.string.quick_settings_location_mode_sensors_label));
             case Settings.Secure.LOCATION_MODE_BATTERY_SAVING:
-                updateLocationExtraTile(R.drawable.ic_qs_location_on_battery,
-                        r.getString(R.string.quick_settings_location_mode_battery_label));
-            break;
+                return r.getString(R.string.quick_settings_location_mode_battery_label));
             case Settings.Secure.LOCATION_MODE_HIGH_ACCURACY:
-                updateLocationExtraTile(R.drawable.ic_qs_location_on_high,
-                        r.getString(R.string.quick_settings_location_mode_high_label));
-            break;
+                return r.getString(R.string.quick_settings_location_mode_high_label));
         }
-        mLocationExtraCallback.refreshView(mLocationExtraTile, mLocationExtraState);
+        return r.getString(R.string.quick_settings_location_off_label);
     }
 
-    void updateLocationExtraTile(int icon) {
-        mLocationExtraState.iconId = icon;
+    private int getLocationDrawableMode(int location) {
+        switch (location) {
+            case Settings.Secure.LOCATION_MODE_SENSORS_ONLY:
+                return R.drawable.ic_qs_location_on_device;
+            case Settings.Secure.LOCATION_MODE_BATTERY_SAVING:
+                return R.drawable.ic_qs_location_on_battery;
+            case Settings.Secure.LOCATION_MODE_HIGH_ACCURACY:
+                return R.drawable.ic_qs_location_on_high;
+        }
+        return R.drawable.ic_qs_location_accuracy_off;
     }
 
     // Bug report
