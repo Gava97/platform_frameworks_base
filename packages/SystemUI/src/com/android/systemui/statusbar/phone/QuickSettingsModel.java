@@ -1028,7 +1028,7 @@ class QuickSettingsModel implements BluetoothStateChangeCallback,
         if (DeviceUtils.deviceSupportsGps(mContext) && (mLocationExtraTile != null)) {
             mLocationExtraState.enabled = locationEnabled;
             mLocationExtraState.label = getLocationMode(mContext.getResources(), mode);
-            mLocationExtraState.iconId = getLocationDrawableMode(locationMode);
+            mLocationExtraState.iconId = getLocationDrawableMode(mode);
             mLocationExtraCallback.refreshView(mLocationExtraTile, mLocationExtraState);
         }
     }
@@ -1036,11 +1036,11 @@ class QuickSettingsModel implements BluetoothStateChangeCallback,
     private String getLocationMode(Resources r, int location) {
         switch (location) {
             case Settings.Secure.LOCATION_MODE_SENSORS_ONLY:
-                return r.getString(R.string.quick_settings_location_mode_sensors_label));
+                return r.getString(R.string.quick_settings_location_mode_sensors_label);
             case Settings.Secure.LOCATION_MODE_BATTERY_SAVING:
-                return r.getString(R.string.quick_settings_location_mode_battery_label));
+                return r.getString(R.string.quick_settings_location_mode_battery_label);
             case Settings.Secure.LOCATION_MODE_HIGH_ACCURACY:
-                return r.getString(R.string.quick_settings_location_mode_high_label));
+                return r.getString(R.string.quick_settings_location_mode_high_label);
         }
         return r.getString(R.string.quick_settings_location_off_label);
     }
@@ -1054,7 +1054,7 @@ class QuickSettingsModel implements BluetoothStateChangeCallback,
             case Settings.Secure.LOCATION_MODE_HIGH_ACCURACY:
                 return R.drawable.ic_qs_location_on_high;
         }
-        return R.drawable.ic_qs_location_accuracy_off;
+        return R.drawable.ic_qs_location_accuracy_all_off;
     }
 
     // Bug report
