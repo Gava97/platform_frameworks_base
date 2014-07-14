@@ -1016,6 +1016,7 @@ class QuickSettingsModel implements BluetoothStateChangeCallback,
         mLocationController = controller;
         mLocationExtraCallback = cb;
         mLocationExtraCallback.refreshView(mLocationExtraTile, mLocationExtraState);
+        onLocationExtraSettingsChanged();
     }
 
     void refreshLocationExtraTile() {
@@ -1024,9 +1025,9 @@ class QuickSettingsModel implements BluetoothStateChangeCallback,
         }
     }
 
-    private void onLocationExtraSettingsChanged(int mode, boolean locationEnabled) {
+    void onLocationExtraSettingsChanged(int mode, boolean locationEnabled) {
         int locationIconId = locationEnabled
-                ? getLocationMode(mContext.getResources(), mode) : R.drawable.ic_qs_location_accuracy_all_off;
+                ? getLocationMode(mContext) : R.drawable.ic_qs_location_accuracy_all_off;
         mLocationExtraState.enabled = locationEnabled;
         mLocationExtraState.label = getLocationMode(mContext.getResources(), mode);
         mLocationExtraState.iconId = locationIconId;
