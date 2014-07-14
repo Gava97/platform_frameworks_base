@@ -723,7 +723,7 @@ class QuickSettings {
                     final QuickSettingsBasicTile headsupTile
                             = new QuickSettingsBasicTile(mContext);
                     headsupTile.setTileId(Tile.HEADSUP);
-                    mModel.addHeadsUpTile(headsupTile,
+                    mModel.addHeadsUpModeTile(headsupTile,
                             new QuickSettingsModel.RefreshCallback() {
                         @Override
                         public void refreshView(QuickSettingsTileView unused, State state) {

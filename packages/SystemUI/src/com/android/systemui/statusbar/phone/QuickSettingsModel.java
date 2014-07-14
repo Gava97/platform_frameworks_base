@@ -660,18 +660,23 @@ class QuickSettingsModel implements BluetoothStateChangeCallback,
 
     private void setHeadsUpState(boolean enabled) {
         Settings.System.putInt(mContext.getContentResolver(), Settings.System.HEADS_UP_NOTIFICATION, !getEnabled() ? 1 : 0);
+
+        // Post the intent
+        Intent intent = new Intent(Intent.ACTION_AIRPLANE_MODE_CHANGED);
+        intent.putExtra("state", enabled);
+        mContext.sendBroadcast(intent);
     }
-    
+    // NetworkSignalChanged callback
     @Override
-    public void onHeadsUpChanged(boolean enabled) {
+    public void onAirplaneModeChanged(boolean enabled) {
         // TODO: If view is in awaiting state, disable
         Resources r = mContext.getResources();
-        mHeadsUpState.enabled = enabled;
-        mHeadsUpState.iconId = (enabled ?
-                R.drawable.ic_qs_heads_up_on :
-                R.drawable.ic_qs_heads_up_off);
-        mHeadsUpState.label = r.getString(R.string.quick_settings_heads_up_label);
-        mHeadsUpCallback.refreshView(mHeadsUpTile, mHeadsUpState);
+        mAirplaneModeState.enabled = enabled;
+        mAirplaneModeState.iconId = (enabled ?
+                R.drawable.ic_qs_airplane_on :
+                R.drawable.ic_qs_airplane_off);
+        mAirplaneModeState.label = r.getString(R.string.quick_settings_airplane_mode_label);
+        mAirplaneModeCallback.refreshView(mAirplaneModeTile, mAirplaneModeState);
     }
 
     // Airplane Mode
@@ -698,22 +703,17 @@ class QuickSettingsModel implements BluetoothStateChangeCallback,
         // Change the system setting
         Settings.Global.putInt(mContext.getContentResolver(), Settings.Global.AIRPLANE_MODE_ON,
                                 enabled ? 1 : 0);
-        // Post the intent
-        Intent intent = new Intent(Intent.ACTION_AIRPLANE_MODE_CHANGED);
-        intent.putExtra("state", enabled);
-        mContext.sendBroadcast(intent);
     }
-    // NetworkSignalChanged callback
     @Override
-    public void onAirplaneModeChanged(boolean enabled) {
+    public void onHeadsUpChanged(boolean enabled) {
         // TODO: If view is in awaiting state, disable
         Resources r = mContext.getResources();
-        mAirplaneModeState.enabled = enabled;
-        mAirplaneModeState.iconId = (enabled ?
-                R.drawable.ic_qs_airplane_on :
-                R.drawable.ic_qs_airplane_off);
-        mAirplaneModeState.label = r.getString(R.string.quick_settings_airplane_mode_label);
-        mAirplaneModeCallback.refreshView(mAirplaneModeTile, mAirplaneModeState);
+        mHeadsUpState.enabled = enabled;
+        mHeadsUpState.iconId = (enabled ?
+                R.drawable.ic_qs_heads_up_on :
+                R.drawable.ic_qs_heads_up_off);
+        mHeadsUpState.label = r.getString(R.string.quick_settings_heads_up_label);
+        mHeadsUpCallback.refreshView(mHeadsUpTile, mAHeadsUpState);
     }
 
     // Wifi
