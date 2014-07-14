@@ -1026,23 +1026,34 @@ class QuickSettingsModel implements BluetoothStateChangeCallback,
 
     private void onLocationExtraSettingsChanged(int mode, boolean locationEnabled) {
         int locationIconId = locationEnabled
-                ? R.drawable.ic_qs_location_accuracy_on : R.drawable.ic_qs_location_accuracy_off;
+                ? getLocationMode(mContext.getResources(), mode) : R.drawable.ic_qs_location_accuracy_all_off;
         mLocationExtraState.enabled = locationEnabled;
         mLocationExtraState.label = getLocationMode(mContext.getResources(), mode);
         mLocationExtraState.iconId = locationIconId;
         mLocationExtraCallback.refreshView(mLocationExtraTile, mLocationExtraState);
     }
 
-    private String getLocationMode(Resources r, int location) {
+    private void getLocationMode(Resources r, int location) {
         switch (location) {
             case Settings.Secure.LOCATION_MODE_SENSORS_ONLY:
-                return r.getString(R.string.quick_settings_location_mode_sensors_label);
+                updateLocationExtraTile(R.drawable.ic_qs_location_on_device,
+                        r.getString(R.string.quick_settings_location_mode_sensors_label));
+            break;
             case Settings.Secure.LOCATION_MODE_BATTERY_SAVING:
-                return r.getString(R.string.quick_settings_location_mode_battery_label);
+                updateLocationExtraTile(R.drawable.ic_qs_location_on_battery,
+                        r.getString(R.string.quick_settings_location_mode_battery_label));
+            break;
             case Settings.Secure.LOCATION_MODE_HIGH_ACCURACY:
-                return r.getString(R.string.quick_settings_location_mode_high_label);
+                updateLocationExtraTile(R.drawable.ic_qs_location_on_high,
+                        r.getString(R.string.quick_settings_location_mode_high_label));
+            break;
         }
-        return r.getString(R.string.quick_settings_location_off_label);
+        mLocationExtraCallback.refreshView(mLocationExtraTile, mLocationExtraState);
+    }
+
+    void updateLocationExtraTile(int icon, String label) {
+        mLocationExtraState.iconId = icon;
+        mLocationExtraState.label = label;
     }
 
     // Bug report
