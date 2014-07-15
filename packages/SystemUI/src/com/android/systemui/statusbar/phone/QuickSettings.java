@@ -616,52 +616,48 @@ class QuickSettings {
                         parent.addView(rssiTile);
                         if(addMissing) rssiTile.setVisibility(View.GONE);
                     }
-                } else if(Tile.ROTATION.toString().equals(tile.toString())) { // Rotation Lock Tile
-                    if (mContext.getResources()
-                            .getBoolean(R.bool.quick_settings_show_rotation_lock)
-                                    || DEBUG_GONE_TILES) {
-                        final QuickSettingsBasicTile rotationLockTile
+                } else if (Tile.ROTATION.toString().equals(tile.toString())) { // rotation tile
+                  // Rotation Lock
+                  if (mContext.getResources().getBoolean(R.bool.quick_settings_show_rotation_lock)
+                      || DEBUG_GONE_TILES) {
+                      final QuickSettingsBasicTile rotationLockTile
                             = new QuickSettingsBasicTile(mContext);
-                        rotationLockTile.setTileId(Tile.ROTATION);
-                        rotationLockTile.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                final boolean locked = mRotationLockController.isRotationLocked();
-                                mRotationLockController.setRotationLocked(!locked);
-                            }
-                        });
-                        rotationLockTile.setOnLongClickListener(new View.OnLongClickListener() {
-                            @Override
-                            public boolean onLongClick(View v) {
-                                collapsePanels();
-                                startSettingsActivity(
-                                        android.provider.Settings.ACTION_ACCESSIBILITY_SETTINGS);
-                                return true; // Consume click
-                            }
-                        });
-                        mModel.addRotationLockTile(rotationLockTile, mRotationLockController,
-                                new QuickSettingsModel.RefreshCallback() {
-                                    @Override
-                                    public void refreshView(QuickSettingsTileView view,
-                                            State state) {
-                                        QuickSettingsModel.RotationLockState rotationLockState =
-                                                (QuickSettingsModel.RotationLockState) state;
-                                        // can't show/hide view, so just enable/disable
-                                        view.setEnabled(rotationLockState.visible);
-                                        if (state.iconId != 0) {
-                                            // needed to flush any cached IDs
-                                            rotationLockTile.setImageDrawable(null);
-                                            rotationLockTile.setImageResource(state.iconId);
-                                        }
-                                        if (state.label != null) {
-                                            rotationLockTile.setText(state.label);
-                                        }
+
+                      rotationLockTile.setTileId(Tile.ROTATION);
+                      rotationLockTile.setOnClickListener(new View.OnClickListener() {
+                           @Override
+                           public void onClick(View view) {
+                               final boolean locked = mRotationLockController.isRotationLocked();
+                               mRotationLockController.setRotationLocked(!locked);
+                           }
+                      });
+                      rotationLockTile.setOnLongClickListener(new View.OnLongClickListener() {
+                           @Override
+                           public boolean onLongClick(View v) {
+                               startSettingsActivity(android.provider.Settings.ACTION_DISPLAY_SETTINGS);
+                               return true;
+                           }
+                      });
+                      mModel.addRotationLockTile(rotationLockTile, mRotationLockController,
+                           new QuickSettingsModel.RefreshCallback() {
+                                @Override
+                                public void refreshView(QuickSettingsTileView view, State state) {
+                                    QuickSettingsModel.RotationLockState rotationLockState =
+                                          (QuickSettingsModel.RotationLockState) state;
+                                    if (state.iconId != 0) {
+                                       // needed to flush any cached IDs
+                                       rotationLockTile.setImageDrawable(null);
+                                       rotationLockTile.setImageResource(state.iconId);
                                     }
-                                });
-                        parent.addView(rotationLockTile);
-                        if(addMissing) rotationLockTile.setVisibility(View.GONE);
-                    }
-                } else if(Tile.BATTERY.toString().equals(tile.toString())) { // Battery
+                                    if (state.label != null) {
+                                        rotationLockTile.setText(state.label);
+                                    }
+                                }
+                      });
+                      parent.addView(rotationLockTile);
+                      if (addMissing) rotationLockTile.setVisibility(View.GONE);
+                  }
+               } else if(Tile.BATTERY.toString().equals(tile.toString())) { // Battery
                     final QuickSettingsTileView batteryTile = (QuickSettingsTileView)
                             inflater.inflate(R.layout.quick_settings_tile, parent, false);
                     batteryTile.setTileId(Tile.BATTERY);

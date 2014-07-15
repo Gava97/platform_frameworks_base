@@ -1272,22 +1272,28 @@ class QuickSettingsModel implements BluetoothStateChangeCallback,
         mRotationLockController = rotationLockController;
         onRotationLockChanged();
     }
+
     void onRotationLockChanged() {
         onRotationLockStateChanged(mRotationLockController.isRotationLocked(),
                 mRotationLockController.isRotationLockAffordanceVisible());
     }
+
     @Override
     public void onRotationLockStateChanged(boolean rotationLocked, boolean affordanceVisible) {
-        mRotationLockState.visible = affordanceVisible;
+        Resources r = mContext.getResources();
+        mRotationLockState.visible = true;
         mRotationLockState.enabled = rotationLocked;
         mRotationLockState.iconId = rotationLocked
                 ? R.drawable.ic_qs_rotation_locked
                 : R.drawable.ic_qs_auto_rotate;
         mRotationLockState.label = rotationLocked
-                ? mContext.getString(R.string.quick_settings_rotation_locked_label)
-                : mContext.getString(R.string.quick_settings_rotation_unlocked_label);
-        mRotationLockCallback.refreshView(mRotationLockTile, mRotationLockState);
+                ? r.getString(R.string.quick_settings_rotation_locked_label)
+                : r.getString(R.string.quick_settings_rotation_unlocked_label);
+        if (mRotationLockTile != null) {
+            mRotationLockCallback.refreshView(mRotationLockTile, mRotationLockState);
+        }
     }
+
     void refreshRotationLockTile() {
         if (mRotationLockTile != null) {
             onRotationLockChanged();
