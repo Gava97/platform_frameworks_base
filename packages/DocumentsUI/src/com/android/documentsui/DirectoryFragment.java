@@ -1176,12 +1176,10 @@ public class DirectoryFragment extends Fragment {
                             context, mThumbSize);
                     thumbs.put(mUri, result);
                 }
-            } catch (OperationCanceledException e) {
-                // Do nothing
-            } catch (RemoteException e) {
-                Log.w(TAG, "Failed to load thumbnail for " + mUri + ": " + e);
             } catch (Exception e) {
-                Log.w(TAG, "Failed to load thumbnail for " + mUri + ": " + e);
+                if (!(e instanceof OperationCanceledException)) {
+                    Log.w(TAG, "Failed to load thumbnail for " + mUri + ": " + e);
+                }
             } finally {
                 ContentProviderClient.releaseQuietly(client);
             }

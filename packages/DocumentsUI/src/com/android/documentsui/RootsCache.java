@@ -255,20 +255,14 @@ public class RootsCache {
         try {
             client = DocumentsApplication.acquireUnstableProviderOrThrow(resolver, authority);
             cursor = client.query(rootsUri, null, null, null, null);
-            if (cursor != null){
-                while (cursor.moveToNext()) {
-                    final RootInfo root = RootInfo.fromRootsCursor(authority, cursor);
-                    roots.add(root);
-                }
-            } else {
-                Log.w(TAG, "Failed to load some roots from " + authority);
+            while (cursor.moveToNext()) {
+                final RootInfo root = RootInfo.fromRootsCursor(authority, cursor);
+                roots.add(root);
             }
         } catch (Exception e) {
             Log.w(TAG, "Failed to load some roots from " + authority + ": " + e);
         } finally {
-            if (cursor != null){
-                IoUtils.closeQuietly(cursor);
-            }
+            IoUtils.closeQuietly(cursor);
             ContentProviderClient.releaseQuietly(client);
         }
         return roots;

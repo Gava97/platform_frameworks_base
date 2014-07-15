@@ -1037,28 +1037,7 @@ public class DocumentsActivity extends Activity {
             try {
                 startActivity(view);
             } catch (ActivityNotFoundException ex2) {
-                File file = null;
-                int idx = doc.documentId.indexOf(":");
-                if (idx != -1){
-                    String id = doc.documentId.substring(0, idx);
-                    File volume = mIdToPath.get(id);
-                    if (volume != null) {
-                        String fileName = doc.documentId.substring(doc.documentId.indexOf(":") + 1);
-                        file = new File(volume, fileName);
-                    }
-                    if (file != null) {
-                        view.setDataAndType(Uri.fromFile(file), doc.mimeType);
-                        try {
-                            startActivity(view);
-                        } catch (ActivityNotFoundException ex3) {
-                            Toast.makeText(this, R.string.toast_no_application, Toast.LENGTH_SHORT).show();
-                        }
-                    } else {
-                        Toast.makeText(this, R.string.toast_no_application, Toast.LENGTH_SHORT).show();
-                    }
-                } else {
-                    Toast.makeText(this, R.string.toast_no_application, Toast.LENGTH_SHORT).show();
-                }
+                Toast.makeText(this, R.string.toast_no_application, Toast.LENGTH_SHORT).show();
             }
         }
     }
