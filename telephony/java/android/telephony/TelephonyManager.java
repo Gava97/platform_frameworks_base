@@ -833,8 +833,6 @@ public class TelephonyManager {
                 return "iDEN";
             case NETWORK_TYPE_HSPAP:
                 return "HSPA+";
-            case NETWORK_TYPE_GSM:
-                return "GSM";
             case NETWORK_TYPE_DCHSPAP:
                 return "DC-HSPA+";
             default:

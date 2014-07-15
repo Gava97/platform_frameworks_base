@@ -141,6 +141,8 @@ public class ServiceState implements Parcelable {
     public static final int RIL_RADIO_TECHNOLOGY_LTE = 14;
     /** @hide */
     public static final int RIL_RADIO_TECHNOLOGY_HSPAP = 15;
+    /** @hide */
+    public static final int RIL_RADIO_TECHNOLOGY_DCHSPAP = 30;
     /**
      * GSM radio technology only supports voice. It does not support data.
      * @hide
@@ -800,8 +802,6 @@ public class ServiceState implements Parcelable {
             return TelephonyManager.NETWORK_TYPE_LTE;
         case ServiceState.RIL_RADIO_TECHNOLOGY_HSPAP:
             return TelephonyManager.NETWORK_TYPE_HSPAP;
-        case ServiceState.RIL_RADIO_TECHNOLOGY_GSM:
-            return TelephonyManager.NETWORK_TYPE_GSM;
         case ServiceState.RIL_RADIO_TECHNOLOGY_DCHSPAP:
             return TelephonyManager.NETWORK_TYPE_DCHSPAP;
         default:
@@ -853,6 +853,7 @@ public class ServiceState implements Parcelable {
                 || radioTechnology == RIL_RADIO_TECHNOLOGY_HSPA
                 || radioTechnology == RIL_RADIO_TECHNOLOGY_LTE
                 || radioTechnology == RIL_RADIO_TECHNOLOGY_HSPAP
+                || radioTechnology == RIL_RADIO_TECHNOLOGY_DCHSPAP
                 || radioTechnology == RIL_RADIO_TECHNOLOGY_GSM;
     }
 
