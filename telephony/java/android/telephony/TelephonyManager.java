@@ -497,9 +497,7 @@ public class TelephonyManager {
     public void toggleMobileNetwork(int networkState) {
         try {
             getITelephony().toggleMobileNetwork(networkState);
-        } catch (RemoteException e) {
-            // Silently fail
-        }
+        } catch (RemoteException e) { }
     }
 
     /**
@@ -669,6 +667,8 @@ public class TelephonyManager {
     public static final int NETWORK_TYPE_EHRPD = 14;
     /** Current network is HSPA+ */
     public static final int NETWORK_TYPE_HSPAP = 15;
+    /** Current network is GSM {@hide} */
+    public static final int NETWORK_TYPE_GSM = 16;
 
     /** Current network is DC-HSPAP
     * @hide
@@ -766,6 +766,7 @@ public class TelephonyManager {
     public static int getNetworkClass(int networkType) {
         switch (networkType) {
             case NETWORK_TYPE_GPRS:
+            case NETWORK_TYPE_GSM:
             case NETWORK_TYPE_EDGE:
             case NETWORK_TYPE_CDMA:
             case NETWORK_TYPE_1xRTT:
@@ -833,6 +834,8 @@ public class TelephonyManager {
                 return "iDEN";
             case NETWORK_TYPE_HSPAP:
                 return "HSPA+";
+            case NETWORK_TYPE_GSM:
+                return "GSM";
             case NETWORK_TYPE_DCHSPAP:
                 return "DC-HSPA+";
             default:
