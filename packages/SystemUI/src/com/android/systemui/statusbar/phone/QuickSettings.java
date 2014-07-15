@@ -304,8 +304,10 @@ class QuickSettings {
 
     private void setupQuickSettings() {
         // Setup the tiles that we are going to be showing (including the temporary ones)
-        addTiles(mContainerView, false);
-        addTemporaryTiles(mContainerView);
+        LayoutInflater inflater = LayoutInflater.from(mContext);
+
+        addTiles(mContainerView, inflater, false);
+        addTemporaryTiles(mContainerView, inflater);
 
         queryForUserInformation();
         queryForSslCaCerts();
@@ -337,7 +339,7 @@ class QuickSettings {
         collapsePanels();
     }
     
-    private void addTiles(ViewGroup parent, boolean addMissing) {
+    private void addTiles(ViewGroup parent, LayoutInflater inflater, boolean addMissing) {
         // Load all the customizable tiles. If not yet modified by the user, load default ones.
         // After enabled tiles are loaded, proceed to load missing tiles and set them to View.GONE.
         // If all the tiles were deleted, they are still loaded, but their visibility is changed
@@ -887,6 +889,23 @@ class QuickSettings {
                     immersiveTile.setFrontOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                            mModel.switchImmersiveGlobal();
+                            mModel.refreshImmersiveGlobalTile();
+                        }
+                    });
+                    mModel.addImmersiveGlobalTile(immersiveTile.getFront(), new QuickSettingsModel.RefreshCallback() {
+                        @Override
+                        public void refreshView(QuickSettingsTileView unused, State state) {
+                            immersiveTile.setFrontImageResource(state.iconId);
+                            immersiveTile.setFrontText(state.label);
+                        }
+                    });
+                    // Back side (Toggles active immersive modes if global is on)
+                    immersiveTile.setBackImageResource(R.drawable.ic_qs_immersive_off);
+                    immersiveTile.setBackTextResource(R.string.quick_settings_immersive_mode_off_label);
+                    immersiveTile.setBackOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
                             // instead of just returning, assume user wants to turn on immersive
                             if(mModel.getImmersiveMode() == 0) {
                                 immersiveTile.swapTiles(true);
@@ -901,23 +920,6 @@ class QuickSettings {
                         public void refreshView(QuickSettingsTileView unused, State state) {
                             immersiveTile.setBackImageResource(state.iconId);
                             immersiveTile.setBackText(state.label);
-                        }
-                    });
-                    // Back side (Toggles active immersive modes if global is on)
-                    immersiveTile.setBackImageResource(R.drawable.ic_qs_immersive_off);
-                    immersiveTile.setBackTextResource(R.string.quick_settings_immersive_mode_off_label);
-                    immersiveTile.setBackOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            mModel.switchImmersiveModeStyles();
-                            mModel.refreshImmersiveTile();
-                        }
-                    });
-                    mModel.addImmersiveTile(immersiveTile, new QuickSettingsModel.RefreshCallback() {
-                        @Override
-                        public void refreshView(QuickSettingsTileView unused, State state) {
-                            immersiveTile.setImageResource(state.iconId);
-                            immersiveTile.setText(state.label);
                         }
                     });
                     parent.addView(immersiveTile);
@@ -977,10 +979,10 @@ class QuickSettings {
                 }
             }
         }
-        if(!addMissing) addTiles(parent, true);
+        if(!addMissing) addTiles(parent, inflater, true);
     }
 
-    private void addTemporaryTiles(final ViewGroup parent) {
+    private void addTemporaryTiles(final ViewGroup parent, final LayoutInflater inflater) {
         // Alarm tile
         final QuickSettingsBasicTile alarmTile
                 = new QuickSettingsBasicTile(mContext);
