@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (C) 2013 The OmniROM Project This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 2 of the License, or (at your option) any later version. This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details. You should have received a copy of the GNU General Public License along with this program. If not, see <http://www.gnu.org/licenses/>. --> 
+
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+ <!-- Title shown in recents popup for adding an application to the split view -->
+ <string name="status_bar_recent_add_to_split_view">Aggiungi alla Split View</string> 
+ <!-- QS NFC Tile --> <string name="quick_settings_nfc_off">NFC off</string>
+ <string name="quick_settings_nfc_on">NFC on</string>
+ <!-- QuickSettings: Immersive global mode [CHAR LIMIT=NONE] -->
+ <string name="quick_settings_immersive_global_on_label">Immersive</string>
+ <!-- QuickSettings: Immersive global mode (Off) [CHAR LIMIT=NONE] -->
+ <string name="quick_settings_immersive_global_off_label">Immersive Off</string>
+ <!-- QuickSettings: Immersive active modes [CHAR LIMIT=NONE] -->
+ <string name="quick_settings_immersive_mode_off_label">Disabled</string>
+ <string name="quick_settings_immersive_mode_full_label">Completa</string>
+ <string name="quick_settings_immersive_mode_no_status_bar_label">NavBar</string>
+ <string name="quick_settings_immersive_mode_no_navigation_bar_label">StatusBar</string>
+ <!-- QuickSettings: LTE On [CHAR LIMIT=NONE] -->
+ <string name="quick_settings_lte">LTE</string>
+ <!-- QuickSettings: LTE Off [CHAR LIMIT=NONE] -->
+ <string name="quick_settings_lte_off">LTE Off</string>
+ <!-- QuickSettings: Mobile Network (2G/3G) [CHAR LIMIT=NONE] -->
+ <string name="quick_settings_network_type">Network</string>
+ <string name="quick_settings_network_unknown">Sconosciuto</string>
+ <!-- USB Tether Tile [CHAR LIMIT=NONE] -->
+ <string name="quick_settings_usb_tether_connected_label">Tethering Off</string>
+ <string name="quick_settings_usb_tether_on_label">Tethering on</string>
+ <!-- QuickSettings: Wifi AP Tile [CHAR LIMIT=NONE] -->
+ <string name="quick_settings_wifi_ap_label">Wi-Fi AP</string>
+ <string name="quick_settings_wifi_ap_off_label">Wi-Fi AP Off</string>
+ <!-- Quick Settings Bluetooth Extra Tile [CHAR LIMIT=NONE] -->
+ <string name="quick_settings_bluetooth_not_discoverable_label">Non visibile</string>
+ <string name="quick_settings_bluetooth_discoverable_label">Visibile</string>
+ <string name="quick_settings_bluetooth_disabled">Disabilitato</string>
+ <!-- Quick Settings Location Extra Tile [CHAR LIMIT=NONE] -->
+ <string name="quick_settings_location_mode_high_label">Alta</string>
+ <string name="quick_settings_location_mode_battery_label">Batteria</string>
+ <string name="quick_settings_location_mode_sensors_label">Dispositivo</string>
+ <!-- QuickSettings: Sound Tile -->
+ <string name="quick_settings_ringer_mode_silent_label">Silenzioso</string>
+ <string name="quick_settings_ringer_mode_vibrate_label">Vibrazione</string>
+ <string name="quick_settings_ringer_mode_normal_label">Suono</string>
+ <string name="quick_settings_ringer_mode_normal_vibrate_label">Suono &amp; Vibrazione</string>
+ <string name="quick_settings_volume_label">Volume</string>
+ <!-- Content description of the data connection type DC-HSPA+ for accessibility (not shown on the screen). [CHAR LIMIT=NONE] -->
+ <string name="accessibility_data_connection_DC" translatable="false">DC-HSPA+</string> 
+</resources>
