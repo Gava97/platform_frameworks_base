@@ -2365,6 +2365,22 @@ public final class Settings {
 
 
         /**
+         * What color to use for the battery LED while charging - really full (100%)
+         * @hide
+         */
+        public static final String BATTERY_LIGHT_REALLY_FULL_COLOR = "battery_light_really_full_color";
+
+
+        /**
+         * Screen-On Notification Light
+         * 0 - disable, default
+         * 1 - enable
+         * @hide
+         */
+        public static final String SCREEN_ON_NOTIFICATION_LED = "screen_on_notification_led";
+
+
+        /**
 * Show pointer location on screen?
 * 0 = no
 * 1 = yes
