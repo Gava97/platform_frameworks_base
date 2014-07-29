@@ -1322,8 +1322,8 @@ public class NotificationManagerService extends INotificationManager.Stub
             mDefaultNotificationLedOff = Settings.System.getIntForUser(resolver,
                     Settings.System.NOTIFICATION_LIGHT_PULSE_DEFAULT_LED_OFF, mDefaultNotificationLedOff,
                     UserHandle.USER_CURRENT);
- 
-             // LED custom notification colors
+
+            // LED custom notification colors
             mNotificationPulseCustomLedValues.clear();
             if (Settings.System.getIntForUser(resolver,
                     Settings.System.NOTIFICATION_LIGHT_PULSE_CUSTOM_ENABLE, 0,
@@ -2342,7 +2342,7 @@ public class NotificationManagerService extends INotificationManager.Stub
             return;
         }
 
-         for (String packageValuesString : customLedValuesString.split("\\|")) {
+        for (String packageValuesString : customLedValuesString.split("\\|")) {
             String[] packageValues = packageValuesString.split("=");
             if (packageValues.length != 2) {
                 Log.e(TAG, "Error parsing custom led values for unknown package");
