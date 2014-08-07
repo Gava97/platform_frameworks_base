@@ -275,17 +275,17 @@ public abstract class DialogPreference extends Preference implements
      */
     protected void showDialog(Bundle state) {
         // Create the dialog
-         final Dialog dialog = mDialog = createDialog();
-         if (state != null) {
-             dialog.onRestoreInstanceState(state);
-         }
-         if (needInputMethod()) {
-             requestInputMethod(dialog);
-         }
-         dialog.setOnDismissListener(this);
-         dialog.show();
-     }
- 
+        final Dialog dialog = mDialog = createDialog();
+        if (state != null) {
+            dialog.onRestoreInstanceState(state);
+        }
+        if (needInputMethod()) {
+            requestInputMethod(dialog);
+        }
+        dialog.setOnDismissListener(this);
+        dialog.show();
+    }
+
     /**
      * @hide
      */
@@ -293,7 +293,7 @@ public abstract class DialogPreference extends Preference implements
         Context context = getContext();
 
         mWhichButtonClicked = DialogInterface.BUTTON_NEGATIVE;
-        
+
         mBuilder = new AlertDialog.Builder(context)
             .setTitle(mDialogTitle)
             .setIcon(mDialogIcon)
@@ -307,11 +307,11 @@ public abstract class DialogPreference extends Preference implements
         } else {
             mBuilder.setMessage(mDialogMessage);
         }
-        
+
         onPrepareDialogBuilder(mBuilder);
-        
+
         getPreferenceManager().registerOnActivityDestroyListener(this);
-        
+
         return mBuilder.create();
     }
 
