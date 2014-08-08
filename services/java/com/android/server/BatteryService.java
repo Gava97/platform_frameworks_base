@@ -797,8 +797,6 @@ public final class BatteryService extends Binder {
                         Settings.System.BATTERY_LIGHT_MEDIUM_COLOR), false, this);
                 resolver.registerContentObserver(Settings.System.getUriFor(
                         Settings.System.BATTERY_LIGHT_FULL_COLOR), false, this);
-                resolver.registerContentObserver(Settings.System.getUriFor(
-                        Settings.System.BATTERY_LIGHT_REALLY_FULL_COLOR), false, this);
             }
 
             update();
