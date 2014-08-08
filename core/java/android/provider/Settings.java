@@ -2259,10 +2259,10 @@ public final class Settings {
         public static final String SHOW_WEB_SUGGESTIONS = "show_web_suggestions";
 
         /**
-* Whether the notification LED should repeatedly flash when a notification is
-* pending. The value is boolean (1 or 0).
-* @hide
-*/
+         * Whether the notification LED should repeatedly flash when a notification is
+         * pending. The value is boolean (1 or 0).
+         * @hide
+         */
         public static final String NOTIFICATION_LIGHT_PULSE = "notification_light_pulse";
 
         /**
@@ -2362,23 +2362,6 @@ public final class Settings {
          * @hide
          */
         public static final String BATTERY_LIGHT_FULL_COLOR = "battery_light_full_color";
-
-
-        /**
-         * What color to use for the battery LED while charging - really full (100%)
-         * @hide
-         */
-        public static final String BATTERY_LIGHT_REALLY_FULL_COLOR = "battery_light_really_full_color";
-
-
-        /**
-         * Screen-On Notification Light
-         * 0 - disable, default
-         * 1 - enable
-         * @hide
-         */
-        public static final String SCREEN_ON_NOTIFICATION_LED = "screen_on_notification_led";
-
 
         /**
 * Show pointer location on screen?
@@ -2874,6 +2857,9 @@ public final class Settings {
             LOCKSCREEN_SOUNDS_ENABLED,
             SHOW_WEB_SUGGESTIONS,
             NOTIFICATION_LIGHT_PULSE,
+            NOTIFICATION_LIGHT_PULSE_DEFAULT_COLOR,
+            NOTIFICATION_LIGHT_PULSE_DEFAULT_LED_ON,
+            NOTIFICATION_LIGHT_PULSE_DEFAULT_LED_OFF,
             SIP_CALL_OPTIONS,
             SIP_RECEIVE_CALLS,
             POINTER_SPEED,
