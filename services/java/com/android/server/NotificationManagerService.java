@@ -2306,16 +2306,18 @@ public class NotificationManagerService extends INotificationManager.Stub
     {
         // handle notification lights
         if (mLedNotification == null) {
-            // get next notification, if any
-            int n = mLights.size();
-            if (n > 0) {
-                mLedNotification = mLights.get(n-1);
+            // use most recent light with highest score
+            for (int i = mLights.size(); i > 0; i--) {
+                NotificationRecord r = mLights.get(i - 1);
+                if (mLedNotification == null || r.score > mLedNotification.score) {
+                    mLedNotification = r;
+                }
             }
         }
 
         // Don't flash while we are in a call, screen is on or we are in quiet hours with light dimmed
         if (mLedNotification == null || mInCall
-                || mScreenOn) {
+                || (mScreenOn && !mDreaming) || (inQuietHours() && mQuietHoursDim)) {
             mNotificationLight.turnOff();
         } else {
             final Notification ledno = mLedNotification.sbn.getNotification();
@@ -2333,9 +2335,9 @@ public class NotificationManagerService extends INotificationManager.Stub
                     ledOnMS = mDefaultNotificationLedOn;
                     ledOffMS = mDefaultNotificationLedOff;
                 } else {
-                    ledARGB = ledno.ledARGB;
-                    ledOnMS = ledno.ledOnMS;
-                    ledOffMS = ledno.ledOffMS;
+                    ledARGB = mLedNotification.notification.ledARGB;
+                    ledOnMS = mLedNotification.notification.ledOnMS;
+                    ledOffMS = mLedNotification.notification.ledOffMS;
                 }
             }
             if (mNotificationPulseEnabled) {
@@ -2377,8 +2379,7 @@ public class NotificationManagerService extends INotificationManager.Stub
     }
 
     private NotificationLedValues getLedValuesForNotification(NotificationRecord ledNotification) {
-        final String packageName = ledNotification.sbn.getPackageName();
-        return mNotificationPulseCustomLedValues.get(mapPackage(packageName));
+        return mNotificationPulseCustomLedValues.get(mapPackage(ledNotification.pkg));
     }
 
     private String mapPackage(String pkg) {
