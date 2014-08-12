@@ -1284,8 +1284,6 @@ public class NotificationManagerService extends INotificationManager.Stub
             resolver.registerContentObserver(ENABLED_NOTIFICATION_LISTENERS_URI,
                     false, this, UserHandle.USER_ALL);
             resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.NOTIFICATION_LIGHT_PULSE), false, this);
-            resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.NOTIFICATION_LIGHT_PULSE_DEFAULT_COLOR), false, this);
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.NOTIFICATION_LIGHT_PULSE_DEFAULT_LED_ON), false, this);
@@ -1305,35 +1303,35 @@ public class NotificationManagerService extends INotificationManager.Stub
 
         public void update(Uri uri) {
             ContentResolver resolver = mContext.getContentResolver();
-            if (uri == null || NOTIFICATION_LIGHT_PULSE_URI.equals(uri)) {
-                // LED enabled
-                mNotificationPulseEnabled = Settings.System.getIntForUser(resolver,
-                        Settings.System.NOTIFICATION_LIGHT_PULSE, 0, UserHandle.USER_CURRENT) != 0;
 
-                // LED default color
-                mDefaultNotificationColor = Settings.System.getIntForUser(resolver,
-                        Settings.System.NOTIFICATION_LIGHT_PULSE_DEFAULT_COLOR, mDefaultNotificationColor,
-                        UserHandle.USER_CURRENT);
+            // LED enabled
+            mNotificationPulseEnabled = Settings.System.getIntForUser(resolver,
+                    Settings.System.NOTIFICATION_LIGHT_PULSE, 0, UserHandle.USER_CURRENT) != 0;
 
-                // LED default on MS
-                mDefaultNotificationLedOn = Settings.System.getIntForUser(resolver,
-                        Settings.System.NOTIFICATION_LIGHT_PULSE_DEFAULT_LED_ON, mDefaultNotificationLedOn,
-                        UserHandle.USER_CURRENT);
+            // LED default color
+            mDefaultNotificationColor = Settings.System.getIntForUser(resolver,
+                    Settings.System.NOTIFICATION_LIGHT_PULSE_DEFAULT_COLOR, mDefaultNotificationColor,
+                    UserHandle.USER_CURRENT);
 
-                // LED default off MS
-                mDefaultNotificationLedOff = Settings.System.getIntForUser(resolver,
-                        Settings.System.NOTIFICATION_LIGHT_PULSE_DEFAULT_LED_OFF, mDefaultNotificationLedOff,
-                        UserHandle.USER_CURRENT);
+            // LED default on MS
+            mDefaultNotificationLedOn = Settings.System.getIntForUser(resolver,
+                    Settings.System.NOTIFICATION_LIGHT_PULSE_DEFAULT_LED_ON, mDefaultNotificationLedOn,
+                    UserHandle.USER_CURRENT);
 
-                // LED custom notification colors
-                mNotificationPulseCustomLedValues.clear();
-                if (Settings.System.getIntForUser(resolver,
-                            Settings.System.NOTIFICATION_LIGHT_PULSE_CUSTOM_ENABLE, 0,
-                            UserHandle.USER_CURRENT) != 0) {
-                    parseNotificationPulseCustomValuesString(Settings.System.getStringForUser(resolver,
-                                Settings.System.NOTIFICATION_LIGHT_PULSE_CUSTOM_VALUES, UserHandle.USER_CURRENT));
-                }
+            // LED default off MS
+            mDefaultNotificationLedOff = Settings.System.getIntForUser(resolver,
+                    Settings.System.NOTIFICATION_LIGHT_PULSE_DEFAULT_LED_OFF, mDefaultNotificationLedOff,
+                    UserHandle.USER_CURRENT);
+
+            // LED custom notification colors
+            mNotificationPulseCustomLedValues.clear();
+            if (Settings.System.getIntForUser(resolver,
+                    Settings.System.NOTIFICATION_LIGHT_PULSE_CUSTOM_ENABLE, 0,
+                    UserHandle.USER_CURRENT) != 0) {
+                parseNotificationPulseCustomValuesString(Settings.System.getStringForUser(resolver,
+                        Settings.System.NOTIFICATION_LIGHT_PULSE_CUSTOM_VALUES, UserHandle.USER_CURRENT));
             }
+
             if (uri == null || ENABLED_NOTIFICATION_LISTENERS_URI.equals(uri)) {
                 rebindListenerServices();
             }
@@ -1397,8 +1395,8 @@ public class NotificationManagerService extends INotificationManager.Stub
         mNotificationPulseCustomLedValues = new HashMap<String, NotificationLedValues>();
 
         mPackageNameMappings = new HashMap<String, String>();
-        for(String mapping : resources.getStringArray(
-                com.android.internal.R.array.notification_light_package_mapping)) {
+        for (String mapping : resources.getStringArray(
+                 com.android.internal.R.array.notification_light_package_mapping)) {
             String[] map = mapping.split("\\|");
             mPackageNameMappings.put(map[0], map[1]);
         }
@@ -2314,25 +2312,14 @@ public class NotificationManagerService extends INotificationManager.Stub
         }
 
         // Don't flash while we are in a call or screen is on
-        final boolean enableLed;
-        if (mLedNotification == null) {
-            enableLed = false;
-        } else if (isLedNotificationForcedOn(mLedNotification)) {
-            enableLed = true;
-        } else if (mInCall || mScreenOn) {
-            enableLed = false;
-        } else {
-            enableLed = true;
-        }
-
-        if (!enableLed) {
+        if (mLedNotification == null || mInCall || mScreenOn) {
             mNotificationLight.turnOff();
-        } else if (mNotificationPulseEnabled) {
+        } else {
             final Notification ledno = mLedNotification.sbn.getNotification();
             final NotificationLedValues ledValues = getLedValuesForNotification(mLedNotification);
-            int ledARGB;
-            int ledOnMS;
-            int ledOffMS;
+            int ledARGB = ledno.ledARGB;
+            int ledOnMS = ledno.ledOnMS;
+            int ledOffMS = ledno.ledOffMS;
 
             if (ledValues != null) {
                 ledARGB = ledValues.color != 0 ? ledValues.color : mDefaultNotificationColor;
@@ -2342,10 +2329,6 @@ public class NotificationManagerService extends INotificationManager.Stub
                 ledARGB = mDefaultNotificationColor;
                 ledOnMS = mDefaultNotificationLedOn;
                 ledOffMS = mDefaultNotificationLedOff;
-            } else {
-                ledARGB = ledno.ledARGB;
-                ledOnMS = ledno.ledOnMS;
-                ledOffMS = ledno.ledOffMS;
             }
 
             // pulse repeatedly
